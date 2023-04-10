@@ -19,6 +19,20 @@ class Dataread extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function serialize($data)
+    {
+        $serialized = json_encode($data);
+        return utf8_encode($serialized);
+    }
+
+    public function deserialize($data)
+    {
+        $deserialized = utf8_decode($data);
+        return json_decode($deserialized);
+    }
+
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
