@@ -31,13 +31,37 @@ class SinkController extends Controller
 
     public function addDataRead(Request $request, string $sink_id)
     {
-        $dataread = new Dataread();
-        $dataread->sink_id = $sink_id;
-        $dataread->data = $dataread->serialize($request->all());
+        try{
+            $sink = Sink::where('id', $sink_id)->firstOrFail();
+            $engine_template = $sink->engine->template;
 
-        $dataread->save();
+            $set1 = array_keys(json_decode($engine_template, true));
+            asort($set1);
 
-        return response(utf8_encode($dataread->serialize($request->all())), 200);
+            $set2 = array_keys($request->all(), true);
+            asort($set2);
+
+            if(array_values($set1) != array_values($set2)){
+                return response(['error' => 'invalid_data', 'message' => 'Invalid data values'], 400);
+            }
+
+            $correctTyping = Dataread::checkDataTyping($request->all(), $engine_template);
+
+            if (!$correctTyping){
+                return response(['error' => 'invalid_data', 'message' => 'Invalid data typing'], 400);
+            }
+
+            $dataread = new Dataread();
+            $dataread->sink_id = $sink_id;
+            $dataread->data = $dataread->serialize($request->all());
+
+            $dataread->save();
+
+            return response("OK", 200);
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+            return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
+        }
     }
 
 }
