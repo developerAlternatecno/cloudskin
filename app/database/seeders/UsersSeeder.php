@@ -13,11 +13,15 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert(
             array(
                 'id' => '1',
-                'name' => 'admin',
+                'name' => 'Admin',
                 'password' => '$2y$10$phkvVr2yntv/seNLae6mvOlDLh7LFBHaPl2.t52rPuIBnYM9I8.j.', //123456
-                'email' => 'admin@admin.com',
-                //'rol' => 'admin'
+                'email' => 'Admin@Admin.com',
+                'nif' => '23437876E',
+                'nationality' => 'Spain',
+                //'rol' => 'Admin'
             )
         );
+
+        User::find(1)->assignRole('Admin');
     }
 }

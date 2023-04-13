@@ -21,7 +21,7 @@ class SinkController extends Controller
 
             $sink->save();
 
-            return response(['url' => url("/sinks/".$sink_id)], 200);
+            return response(['url' => url("/api/sinks/".$sink_id)], 200);
 
         }catch (\Exception $e){
             Log::error($e->getMessage());
@@ -32,7 +32,13 @@ class SinkController extends Controller
     public function addDataRead(Request $request, string $sink_id)
     {
         try{
-            $sink = Sink::where('id', $sink_id)->firstOrFail();
+            # We check if the sink exists
+            $sink = Sink::where('id', $sink_id)->first();
+
+            if (!$sink){
+                return response(['error' => 'sink_not_found', 'message' => 'The sink does not exist'], 404);
+            }
+            # We check if the entyr json has the same keys that the json stored in the Engine
             $engine_template = $sink->engine->template;
 
             $set1 = array_keys(json_decode($engine_template, true));
@@ -45,12 +51,14 @@ class SinkController extends Controller
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data values'], 400);
             }
 
+            # We check if the data has the correct typing
             $correctTyping = Dataread::checkDataTyping($request->all(), $engine_template);
 
             if (!$correctTyping){
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data typing'], 400);
             }
 
+            # We create the dataread
             $dataread = new Dataread();
             $dataread->sink_id = $sink_id;
             $dataread->data = $dataread->serialize($request->all());

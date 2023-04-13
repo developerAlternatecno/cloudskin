@@ -57,6 +57,11 @@ class Dataread extends Model
     {
         return $this->belongsTo(Sink::class);
     }
+
+    public function dataset()
+    {
+        return $this->belongsTo(Dataset::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
