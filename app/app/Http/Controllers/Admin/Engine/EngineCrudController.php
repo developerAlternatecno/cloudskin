@@ -3,8 +3,13 @@
 namespace App\Http\Controllers\Admin\Engine;
 
 use App\Http\Requests\EngineRequest;
+use App\Models\Dataset;
+use App\Models\Engine;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
+use Prologue\Alerts\Facades\Alert;
 
 /**
  * Class EngineCrudController
@@ -59,18 +64,122 @@ class EngineCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(EngineRequest::class);
+        $this->crud->setSaveActions(
+                [
+                'name' => 'Guardar',
+                'visible' => function ($crud) {
+                    return True;
+                },
+                'redirect' => function ($crud, $request, $itemId) {
+                    return $crud->route;
+                },
+            ]
+        );
 
-        CRUD::field('created_at');
-        CRUD::field('id');
-        CRUD::field('template');
-        CRUD::field('updated_at');
+//        license
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+        $this->crud->addField([
+            'name' => 'dataset_name',
+            'label' => 'Nombre del dataset',
+            'type' => 'text',
+            'required' => true,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_type',
+            'label' => 'Modo de venta',
+            'type' => 'select_from_array',
+            'required' => true,
+            'options' => Dataset::DATASET_TYPES,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_price',
+            'label' => 'Precio de venta (€)',
+            'type' => 'number',
+            'required' => true,
+            'hint' => 'El precio de venta para casos de alquiler será mensual',
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_license',
+            'label' => 'Licencia',
+            'type' => 'select_from_array',
+            'required' => true,
+            'options' => Dataset::DATASET_LICENSES,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_description',
+            'label' => 'Descripción del dataset',
+            'type' => 'textarea',
+            'required' => true,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'engine_template',
+            'label' => 'Formato de los datos generados',
+            'type' => 'repeatable', // tipo de campo
+            'fields' => [
+                [
+                    'name' => 'field_name',
+                    'label' => 'Nombre del campo',
+                    'type' => 'text',
+                    'required' => true,
+                    'wrapperAttributes' => [
+                        'class' => 'col-md-3',
+                    ],
+                ],
+                [
+                    'name' => 'type',
+                    'label' => 'Tipo',
+                    'type' => 'select_from_array',
+                    'options' => array_keys(Engine::ENGINE_TYPING),
+                    'required' => true,
+                    'wrapperAttributes' => [
+                        'class' => 'col-md-3',
+                    ],
+                ],
+                [
+                    'name' => 'field_unit',
+                    'label' => 'Unidad del valor',
+                    'type' => 'text',
+                    'required' => true,
+                    'wrapperAttributes' => [
+                        'class' => 'col-md-3',
+                    ],
+                ],
+                [
+                    'name' => 'length',
+                    'label' => 'Longitud',
+                    'type' => 'number',
+                    'wrapperAttributes' => [
+                        'class' => 'col-md-3',
+                    ],
+                ],
+            ],
+            'new_item_label' => 'Añadir dato',
+            'hint' => 'El campo unidad es solo si es necesario, el campo longitud solo si el tipo es string',
+        ]);
+
+    }
+
+    public function store()
+    {
+        $request = $this->crud->getStrippedSaveRequest();
+
+        Log::info("request->engine_template");
+        Log::info($request['engine_template']);
+        $isEngineCreated = Engine::createEngineFromCrudController($request['engine_template']);
+        $isDatasetCreated = Dataset::createDataset($request);
+
+        if ($isEngineCreated && $isDatasetCreated) {
+            Alert::success("Se ha creado correctamente");
+            return Redirect::to(backpack_url('/engine'));
+        }
+        Alert::error("No se ha creado correctamente");
+        return Redirect::to(backpack_url('/engine'));
+
     }
 
     /**
@@ -79,8 +188,8 @@ class EngineCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
-    protected function setupUpdateOperation()
-    {
-        $this->setupCreateOperation();
-    }
+//    protected function setupUpdateOperation()
+//    {
+//        $this->setupCreateOperation();
+//    }
 }

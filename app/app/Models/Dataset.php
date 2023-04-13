@@ -15,11 +15,41 @@ class Dataset extends Model
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
+    const DATASET_TYPES = [
+        'buyout' => 'Compra',
+        'rental' => 'Alquiler'
+    ];
+
+    const DATASET_LICENSES = [
+        'national' => 'Nacional',
+        'european' => 'Europea',
+        'unlimited' => 'Ilimitada'
+    ];
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public static function createDataset($request){
+        try{
+            $dataset = new Dataset();
+            $dataset->name = $request['dataset_name'];
+            $dataset->type = $request['dataset_type'];
+            $dataset->price = $request['dataset_price'];
+            $dataset->license = $request['dataset_license'];
+            $dataset->description = $request['dataset_description'];
+
+            $dataset->save();
+
+            return true;
+        }catch(\Exception $e){
+            Log::error("Error while creating dataset");
+            Log::error($e->getMessage());
+            return false;
+        }
+
+    }
 
     /*
     |--------------------------------------------------------------------------
