@@ -60,9 +60,9 @@ class User extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
-    public function sinks()
+    public function datasets()
     {
-        return $this->hasMany(Sink::class);
+        return $this->hasMany(Dataset::class);
     }
 
     /*

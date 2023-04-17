@@ -3,25 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dataread;
-use App\Models\Sink;
+use App\Models\Dataset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class SinkController extends Controller
+class DatasetController extends Controller
 {
-    public function createSink(Request $request)
+    public function createDatasetFromAPI(Request $request)
     {
         try{
-            $sink_id = Str::uuid()->toString();
-            $sink = new Sink();
-            $sink->id = $sink_id;
-            $sink->user_id = $request->user_id;
-            $sink->engine_id = $request->engine_id;
+            $dataset_id = Str::uuid()->toString();
+            $dataset = new Dataset();
+            $dataset->id = $dataset_id;
+            $dataset->user_id = $request->user_id;
+            $dataset->engine_id = $request->engine_id;
 
-            $sink->save();
+            $dataset->save();
 
-            return response(['url' => url("/api/sinks/".$sink_id)], 200);
+            return response(['url' => url("/api/datasets/".$dataset_id)], 200);
 
         }catch (\Exception $e){
             Log::error($e->getMessage());
@@ -29,17 +29,17 @@ class SinkController extends Controller
         }
     }
 
-    public function addDataRead(Request $request, string $sink_id)
+    public function addDataRead(Request $request, string $dataset_id)
     {
         try{
-            # We check if the sink exists
-            $sink = Sink::where('id', $sink_id)->first();
+            # We check if the dataset exists
+            $dataset = Dataset::where('id', $dataset_id)->first();
 
-            if (!$sink){
-                return response(['error' => 'sink_not_found', 'message' => 'The sink does not exist'], 404);
+            if (!$dataset){
+                return response(['error' => 'dataset_not_found', 'message' => 'The dataset does not exist'], 404);
             }
             # We check if the entyr json has the same keys that the json stored in the Engine
-            $engine_template = $sink->engine->template;
+            $engine_template = $dataset->engine->template;
 
             $set1 = array_keys(json_decode($engine_template, true));
             asort($set1);
@@ -60,7 +60,7 @@ class SinkController extends Controller
 
             # We create the dataread
             $dataread = new Dataread();
-            $dataread->sink_id = $sink_id;
+            $dataread->dataset_id = $dataset_id;
             $dataread->data = $dataread->serialize($request->all());
 
             $dataread->save();

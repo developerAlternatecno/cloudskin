@@ -53,11 +53,6 @@ class Dataread extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function sink()
-    {
-        return $this->belongsTo(Sink::class);
-    }
-
     public function dataset()
     {
         return $this->belongsTo(Dataset::class);

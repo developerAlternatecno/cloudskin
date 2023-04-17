@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Engine;
+namespace App\Http\Controllers\Admin\Dataset;
 
-use App\Http\Requests\EngineRequest;
+use App\Http\Requests\DatasetRequest;
 use App\Models\Dataset;
 use App\Models\Engine;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Redirect;
 use Prologue\Alerts\Facades\Alert;
 
 /**
- * Class EngineCrudController
+ * Class DatasetCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class EngineCrudController extends CrudController
+class DatasetCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -31,9 +31,9 @@ class EngineCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Engine::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/engine');
-        CRUD::setEntityNameStrings('engine', 'engines');
+        CRUD::setModel(\App\Models\Dataset::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/dataset');
+        CRUD::setEntityNameStrings('dataset', 'datasets');
     }
 
     /**
@@ -45,8 +45,9 @@ class EngineCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('created_at');
-        CRUD::column('id');
-        CRUD::column('template');
+        CRUD::column('description');
+        CRUD::column('url');
+        CRUD::column('type');
         CRUD::column('updated_at');
 
         /**
@@ -64,19 +65,16 @@ class EngineCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        $this->crud->setSaveActions(
-                [
-                'name' => 'Guardar',
-                'visible' => function ($crud) {
-                    return True;
-                },
-                'redirect' => function ($crud, $request, $itemId) {
-                    return $crud->route;
-                },
-            ]
+        $this->crud->setSaveActions([
+            'name' => 'Guardar',
+            'visible' => function ($crud) {
+                return True;
+            },
+            'redirect' => function ($crud, $request, $itemId) {
+                return $crud->route;
+            },
+        ]
         );
-
-//        license
 
         $this->crud->addField([
             'name' => 'dataset_name',
@@ -162,23 +160,29 @@ class EngineCrudController extends CrudController
             'new_item_label' => 'Añadir dato',
             'hint' => 'El campo unidad es solo si es necesario, el campo longitud solo si el tipo es string',
         ]);
-
     }
+
 
     public function store()
     {
         $request = $this->crud->getStrippedSaveRequest();
 
-        $isEngineCreated = Engine::createEngineFromCrudController($request['engine_template']);
-        $isDatasetCreated = Dataset::createDataset($request);
-
-        if ($isEngineCreated && $isDatasetCreated) {
-            Alert::success("Se ha creado correctamente");
+        $engine_id = Engine::createEngineFromCrudController($request['engine_template']);
+        if (!$engine_id) {
+            Log::error("Error creando el engine");
+            Alert::error("No se ha creado correctamente");
             return Redirect::to(backpack_url('/engine'));
         }
 
+        $isDatasetCreated = Dataset::createDataset($request, $engine_id);
+
+        if ($engine_id && $isDatasetCreated) {
+            Alert::success("Se ha creado correctamente");
+            return Redirect::to(backpack_url('/dataset'));
+        }
         Alert::error("No se ha creado correctamente");
-        return Redirect::to(backpack_url('/engine'));
+        return Redirect::to(backpack_url('/dataset'));
+
     }
 
     /**
@@ -187,8 +191,28 @@ class EngineCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
-//    protected function setupUpdateOperation()
-//    {
-//        $this->setupCreateOperation();
-//    }
+    protected function setupUpdateOperation()
+    {
+        $this->setupCreateOperation();
+    }
+
+    protected function setupShowOperation()
+    {
+        CRUD::column('created_at');
+        CRUD::column('description');
+        CRUD::column('url');
+        CRUD::column('type');
+
+
+        // Agregar la tabla a la configuración de la vista de detalle
+        $this->crud->addColumns([
+            [
+                'name' => 'table_html',
+                'label' => 'Últimos 5 registros',
+                'type' => 'custom_html',
+                'value' => Dataset::where('id', $this->crud->getCurrentEntry()->id)->first()->generateLastDataReadsTable(),
+            ]
+        ]);
+
+    }
 }

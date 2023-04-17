@@ -15,13 +15,18 @@ class CreateDatasetsTable extends Migration
     public function up()
     {
         Schema::create('datasets', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary();
 
-            $table->string('name');
-            $table->enum('type', ['buyout', 'rental']);
-            $table->float('price');
-            $table->enum('license', ['national', 'european', 'unlimited']);
-            $table->text('description');
+            $table->foreignId('user_id')->constrained('users');
+
+            $table->string("engine_id")->nullable();
+            $table->foreign("engine_id")->references('id')->on('engines');
+
+            $table->string('name')->nullable();
+            $table->enum('type', ['buyout', 'rental'])->nullable();
+            $table->float('price')->nullable();
+            $table->enum('license', ['national', 'european', 'unlimited'])->nullable();
+            $table->text('description')->nullable();
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

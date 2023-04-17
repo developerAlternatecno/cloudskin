@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\DatasetController;
 use App\Http\Controllers\EngineController;
-use App\Http\Controllers\SinkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,5 +26,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/engines', [EngineController::class, 'createEngine']);
 
 #Sinks
-Route::post('/sinks', [SinkController::class, 'createSink']);
-Route::post('/sinks/{sink_id}', [SinkController::class, 'addDataRead']);
+Route::post('/datasets', [DatasetController::class, 'createDatasetFromAPI']);
+Route::post('/datasets/{dataset_id}', [DatasetController::class, 'addDataRead']);

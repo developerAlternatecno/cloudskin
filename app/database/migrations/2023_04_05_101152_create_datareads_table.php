@@ -17,8 +17,8 @@ class CreateDatareadsTable extends Migration
         Schema::create('datareads', function (Blueprint $table) {
             $table->id();
 
-            $table->string("sink_id")->nullable();
-            $table->foreign("sink_id")->references('id')->on('sinks');
+            $table->string("dataset_id")->nullable();
+            $table->foreign("dataset_id")->references('id')->on('datasets');
 
             $table->binary("data");
 
