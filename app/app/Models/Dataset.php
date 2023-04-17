@@ -68,10 +68,14 @@ class Dataset extends Model
     public function generateLastDataReadsTable(){
 
         $datareads = $this->datareads()->latest()->take(5)->get();
-        
+
         $data = [];
         foreach ($datareads as $dataread){
             array_push($data, get_object_vars($dataread->deserialize($dataread->data)));
+        }
+
+        if ($data == []) {
+            return "<p>No hay datos disponibles</p>";
         }
 
         // Obtener las columnas de la tabla a partir de los datos
