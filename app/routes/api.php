@@ -28,3 +28,4 @@ Route::post('/engines', [EngineController::class, 'createEngine']);
 #Sinks
 Route::post('/datasets', [DatasetController::class, 'createDatasetFromAPI']);
 Route::post('/datasets/{dataset_id}', [DatasetController::class, 'addDataRead']);
+Route::get('/datasets/{dataset_id}', [DatasetController::class, 'getDataReads']);

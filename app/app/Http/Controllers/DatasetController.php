@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dataread;
 use App\Models\Dataset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -66,6 +67,37 @@ class DatasetController extends Controller
             $dataread->save();
 
             return response("OK", 200);
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+            return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
+        }
+    }
+
+    public function getDataReads(Request $request, string $dataset_id){
+        try{
+
+            $start_time = $request->input('start_time') ?? null;
+            $end_time = $request->input('end_time') ?? null;
+
+            $dataset = Dataset::where('id', $dataset_id)->first();
+
+            # si start_time o end_time son null devolver error
+            if ($start_time and $end_time){
+                $datereads = $dataset->datareads()->whereBetween('created_at', [$start_time, $end_time])->limit(1000)->get();
+            }else{
+                $datereads = $dataset->datareads()->limit(1000)->get();
+            }
+
+            $data = [];
+            foreach ($datereads as $dataread){
+                $dataread->created_at = Carbon::parse($dataset->created_at)->format('d-m-Y H:i:s');
+                $dataread->updated_at = Carbon::parse($dataset->updated_at)->format('d-m-Y H:i:s');
+                $dataread->data = $dataread->deserialize($dataread->data);
+                $data[] = $dataread;
+            }
+
+            return $data;
+
         }catch (\Exception $e){
             Log::error($e->getMessage());
             return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
