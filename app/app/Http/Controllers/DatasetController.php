@@ -45,7 +45,7 @@ class DatasetController extends Controller
             $set1 = array_keys(json_decode($engine_template, true));
             asort($set1);
 
-            $set2 = array_keys($request->all(), true);
+            $set2 = array_keys($request['data'], true);
             asort($set2);
 
             if(array_values($set1) != array_values($set2)){
@@ -53,7 +53,7 @@ class DatasetController extends Controller
             }
 
             # We check if the data has the correct typing
-            $correctTyping = Dataread::checkDataTyping($request->all(), $engine_template);
+            $correctTyping = Dataread::checkDataTyping($request['data'], $engine_template);
 
             if (!$correctTyping){
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data typing'], 400);
@@ -62,7 +62,9 @@ class DatasetController extends Controller
             # We create the dataread
             $dataread = new Dataread();
             $dataread->dataset_id = $dataset_id;
-            $dataread->data = $dataread->serialize($request->all());
+            $dataread->data = $dataread->serialize($request['data']);
+            $dataread->longitude = $request['longitude'] ?? null;
+            $dataread->latitude = $request['latitude'] ?? null;
 
             $dataread->save();
 
@@ -81,22 +83,25 @@ class DatasetController extends Controller
 
             $dataset = Dataset::where('id', $dataset_id)->first();
 
-            # si start_time o end_time son null devolver error
-            if ($start_time and $end_time){
-                $datereads = $dataset->datareads()->whereBetween('created_at', [$start_time, $end_time])->limit(1000)->get();
-            }else{
-                $datereads = $dataset->datareads()->limit(1000)->get();
+            if (!$dataset){
+                return response(['error' => 'dataset_not_found', 'message' => 'The dataset does not exist'], 404);
             }
 
-            $data = [];
-            foreach ($datereads as $dataread){
+            # si start_time o end_time son null devolver error
+            if ($start_time and $end_time){
+                $datareads = $dataset->datareads()->whereBetween('created_at', [$start_time, $end_time])->paginate(1000);
+            }else{
+                $datareads = $dataset->datareads()->paginate(1000);
+            }
+            
+            foreach ($datareads as $dataread){
                 $dataread->created_at = Carbon::parse($dataset->created_at)->format('d-m-Y H:i:s');
                 $dataread->updated_at = Carbon::parse($dataset->updated_at)->format('d-m-Y H:i:s');
                 $dataread->data = $dataread->deserialize($dataread->data);
-                $data[] = $dataread;
+
             }
 
-            return $data;
+            return $datareads;
 
         }catch (\Exception $e){
             Log::error($e->getMessage());
