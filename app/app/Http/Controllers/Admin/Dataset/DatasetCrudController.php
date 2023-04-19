@@ -115,6 +115,13 @@ class DatasetCrudController extends CrudController
         ]);
 
         $this->crud->addField([
+            'name' => 'dataset_checkbox',
+            'label' => '¿ Datos geo-referenciados ?',
+            'type' => 'checkbox',
+            'hint' => 'Si los datos son geo-referenciados, a la hora del envío de datos vía API será necesario indicar la latitud y longitud del punto de interés, mediante los campos "latitude" y "longitude".',
+        ]);
+
+        $this->crud->addField([
             'name' => 'engine_template',
             'label' => 'Formato de los datos generados',
             'type' => 'repeatable', // tipo de campo

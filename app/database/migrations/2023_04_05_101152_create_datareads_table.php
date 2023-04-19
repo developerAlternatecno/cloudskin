@@ -20,6 +20,8 @@ class CreateDatareadsTable extends Migration
             $table->string("dataset_id")->nullable();
             $table->foreign("dataset_id")->references('id')->on('datasets');
 
+            $table->float("latitude",30, 28)->nullable();
+            $table->float("longitude",30, 28)->nullable();
             $table->binary("data");
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

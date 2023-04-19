@@ -36,16 +36,18 @@ class Dataread extends Model
     public static function checkDataTyping($data, $engine_template)
     {
         $engine_template = json_decode($engine_template, true);
+        $error_message = '';
         foreach ($data as $key => $value) {
             $type = Engine::ENGINE_TYPING[$engine_template[$key]['type']];
 
             if (gettype($value) != $type['type']) {
-                return false;
+                $type_name = $engine_template[$key]['type'];
+                $error_message .= "The value type of the key '$key' must be '$type_name'. ";
             }
 
             #TODO: AÑADIR TEMA DE LA LONGITUD de bytes/caracteres
         }
-        return true;
+        return $error_message == '' ? true : $error_message;
     }
 
     /*

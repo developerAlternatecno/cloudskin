@@ -39,6 +39,13 @@ class DatasetController extends Controller
             if (!$dataset){
                 return response(['error' => 'dataset_not_found', 'message' => 'The dataset does not exist'], 404);
             }
+
+            if ($dataset->is_geolocated){
+                if (!isset($request['longitude']) or !isset($request['latitude'])){
+                    return response(['error' => 'invalid_data', 'message' => 'The dataset is geolocated, so you must provide longitude and latitude values.'], 400);
+                }
+            }
+
             # We check if the entyr json has the same keys that the json stored in the Engine
             $engine_template = $dataset->engine->template;
 
@@ -49,14 +56,14 @@ class DatasetController extends Controller
             asort($set2);
 
             if(array_values($set1) != array_values($set2)){
-                return response(['error' => 'invalid_data', 'message' => 'Invalid data values'], 400);
+                return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset.'], 400);
             }
 
             # We check if the data has the correct typing
             $correctTyping = Dataread::checkDataTyping($request['data'], $engine_template);
 
-            if (!$correctTyping){
-                return response(['error' => 'invalid_data', 'message' => 'Invalid data typing'], 400);
+            if (gettype($correctTyping) == "string"){
+                return response(['error' => 'invalid_data', 'message' => $correctTyping], 400);
             }
 
             # We create the dataread
@@ -93,7 +100,7 @@ class DatasetController extends Controller
             }else{
                 $datareads = $dataset->datareads()->paginate(1000);
             }
-            
+
             foreach ($datareads as $dataread){
                 $dataread->created_at = Carbon::parse($dataset->created_at)->format('d-m-Y H:i:s');
                 $dataread->updated_at = Carbon::parse($dataset->updated_at)->format('d-m-Y H:i:s');

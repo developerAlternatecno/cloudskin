@@ -22,6 +22,19 @@ class UsersSeeder extends Seeder
             )
         );
 
+        DB::table('users')->insert(
+            array(
+                'id' => '2',
+                'name' => 'User',
+                'password' => '$2y$10$phkvVr2yntv/seNLae6mvOlDLh7LFBHaPl2.t52rPuIBnYM9I8.j.', //123456
+                'email' => 'user@user.com',
+                'nif' => '23437116E',
+                'nationality' => 'Spain',
+                //'rol' => 'User'
+            )
+        );
+
         User::find(1)->assignRole('Admin');
+        User::find(2)->assignRole('User');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DatareadController;
 use App\Http\Controllers\DatasetController;
 use App\Http\Controllers\EngineController;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
+#Map
+Route::get('/map/datareads', [DatareadController::class, 'getMapDatareads']);
 
 # Engines
 Route::post('/engines', [EngineController::class, 'createEngine']);

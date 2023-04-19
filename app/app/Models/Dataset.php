@@ -53,6 +53,7 @@ class Dataset extends Model
             $dataset->price = $request['dataset_price'];
             $dataset->license = $request['dataset_license'];
             $dataset->description = $request['dataset_description'];
+            $dataset->is_geolocated = $request['dataset_checkbox'];
 
             $dataset->save();
 
