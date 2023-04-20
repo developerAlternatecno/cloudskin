@@ -3,6 +3,7 @@
 use App\Http\Controllers\DatareadController;
 use App\Http\Controllers\DatasetController;
 use App\Http\Controllers\EngineController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +32,4 @@ Route::post('/engines', [EngineController::class, 'createEngine']);
 Route::post('/datasets', [DatasetController::class, 'createDatasetFromAPI']);
 Route::post('/datasets/{dataset_id}', [DatasetController::class, 'addDataRead']);
 Route::get('/datasets/{dataset_id}', [DatasetController::class, 'getDataReads']);
+Route::post('/datasets/{dataset_id}/purchase', [PurchaseController::class, 'createPurchase']);

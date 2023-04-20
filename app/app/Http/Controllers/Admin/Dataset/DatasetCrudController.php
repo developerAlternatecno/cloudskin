@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Dataset;
 
-use App\Http\Requests\DatasetRequest;
+use App\Http\Controllers\Admin\Dataset\Operations\DatasetPurchaseOperation;
 use App\Models\Dataset;
 use App\Models\Engine;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -23,6 +23,7 @@ class DatasetCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use DatasetPurchaseOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -44,7 +45,7 @@ class DatasetCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('created_at');
+        CRUD::column('name');
         CRUD::column('description');
         CRUD::column('url');
         CRUD::column('type');

@@ -3,28 +3,20 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasPermissions;
-use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class Purchase extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, CrudTrait, HasPermissions, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, CrudTrait;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -60,13 +52,14 @@ class User extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
-    public function datasets()
+    public function user()
     {
-        return $this->hasMany(Dataset::class);
+        return $this->belongsTo(User::class);
     }
-    public function purchases()
+
+    public function dataset()
     {
-        return $this->hasMany(Purchase::class);
+        return $this->belongsTo(Dataset::class);
     }
 
     /*

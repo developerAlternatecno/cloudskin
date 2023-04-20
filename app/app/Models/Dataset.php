@@ -29,7 +29,7 @@ class Dataset extends Model
         'unlimited' => 'Ilimitada'
     ];
 
-    protected $appends = ['url'];
+    protected $appends = ['url', 'isPurchased'];
 
     protected $keyType = 'string';
     /*
@@ -121,6 +121,11 @@ class Dataset extends Model
     {
         return $this->hasMany(DataRead::class);
     }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -135,6 +140,9 @@ class Dataset extends Model
     public function getUrlAttribute(): string
     {
         return url("/api/datasets/".$this->id);
+    }
+    public function getIsPurchasedAttribute(){
+        return $this->purchases()->where('user_id', Auth::id())->where('is_active', 1)->exists();
     }
     /*
     |--------------------------------------------------------------------------
