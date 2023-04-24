@@ -7,6 +7,7 @@ use App\Models\Dataset;
 use App\Models\Engine;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Prologue\Alerts\Facades\Alert;
@@ -20,8 +21,8 @@ class DatasetCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+//    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+//    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use DatasetPurchaseOperation;
 
@@ -123,6 +124,14 @@ class DatasetCrudController extends CrudController
         ]);
 
         $this->crud->addField([
+            'name' => 'provider_doc',
+            'label' => 'Data use contract',
+            'type' => 'upload',
+            'upload' => true,
+            'hint'=> 'Upload a optional data use contract, if you do, you will have to validate manually that the buyer has signed the contract.',
+        ]);
+
+        $this->crud->addField([
             'name' => 'engine_template',
             'label' => 'Formato de los datos generados',
             'type' => 'repeatable', // tipo de campo
@@ -171,11 +180,11 @@ class DatasetCrudController extends CrudController
     }
 
 
-    public function store()
+    public function store(Request $request)
     {
-        $request = $this->crud->getStrippedSaveRequest();
+        $request_array = $this->crud->getStrippedSaveRequest();
 
-        $engine_id = Engine::createEngineFromCrudController($request['engine_template']);
+        $engine_id = Engine::createEngineFromCrudController($request_array['engine_template']);
         if (!$engine_id) {
             Log::error("Error creando el engine");
             Alert::error("No se ha creado correctamente");

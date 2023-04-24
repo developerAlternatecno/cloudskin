@@ -26,8 +26,7 @@ class CreatePurchasesTable extends Migration
             $table->boolean("is_active")->default(true);
             $table->boolean("is_validated")->default(false);
 
-            $table->binary("provider_doc")->nullable();
-            $table->binary("buyer_doc")->nullable();
+            $table->string("buyer_doc")->nullable();
 
             $table->date("expire_date")->nullable();
             $table->enum('type', ['buyout', 'rental']);

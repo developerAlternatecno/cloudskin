@@ -102,6 +102,23 @@ trait DatasetPurchaseOperation
             'value' => auth()->user()->id,
         ]);
 
+
+        if($this->crud->getCurrentEntry()->provider_doc != null){
+            $this->crud->addField([
+                'name' => 'buyer_doc',
+                'label' => 'Signed data use contract',
+                'type' => 'upload',
+                'hint'=> 'Sing and upload the data use contract provided by the seller, after this, you won\'t be able to work with the dataset until the provider validates the signature.',
+            ]);
+
+            $this->crud->addField([
+                'name' => 'download_button',
+                'type' => 'custom_html',
+                'value' => '<a href="'.route('provider-doc', $this->crud->getCurrentEntry()->id) .'" class="btn btn-sm btn-link"><i class="las la-download"></i> Download provider data use contract</a>',
+            ]);
+        }
+
+
         $this->crud->addField([
             'name' => 'custom_button',
             'type' => 'custom_html',

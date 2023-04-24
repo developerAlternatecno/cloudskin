@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Dataset extends Model
@@ -38,10 +40,16 @@ class Dataset extends Model
     |--------------------------------------------------------------------------
     */
 
-    public static function createDataset($request, $engine_id){
+    public static function createDataset(Request $request, $engine_id){
         try{
-
             $dataset_id = Str::uuid()->toString();
+
+            $file = $request->file('provider_doc') ?? null;
+            if ($file){
+                $filePath = $file->store('/public/datasets/'.$dataset_id);
+                $fileUrl = Storage::url($filePath);
+            }
+
             $dataset = new Dataset();
             $dataset->id = $dataset_id;
 
@@ -54,6 +62,7 @@ class Dataset extends Model
             $dataset->license = $request['dataset_license'];
             $dataset->description = $request['dataset_description'];
             $dataset->is_geolocated = $request['dataset_checkbox'];
+            $dataset->provider_doc = $fileUrl ?? null;
 
             $dataset->save();
 

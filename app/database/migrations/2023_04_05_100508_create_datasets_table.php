@@ -28,6 +28,7 @@ class CreateDatasetsTable extends Migration
             $table->enum('license', ['national', 'european', 'unlimited'])->nullable();
             $table->text('description')->nullable();
             $table->boolean('is_geolocated')->nullable();
+            $table->string("provider_doc")->nullable();
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

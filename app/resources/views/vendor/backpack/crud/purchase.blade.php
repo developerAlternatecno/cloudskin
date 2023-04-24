@@ -94,14 +94,12 @@
 
             // Convertir el objeto JSON a una cadena
             const body = JSON.stringify(data);
-
+            let entry_id = "{{ $crud->getCurrentEntryId() }}";
+            let fetchUrl = '/api/datasets/'+ entry_id.toString() +'/purchase';
           // Realiza una petición POST a la URL especificada
-          fetch('/api/datasets/'+ {{$crud->getCurrentEntryId()}}+'/purchase', {
+          fetch(fetchUrl, {
             method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            body: formData
           })
           .then(response => {
             // Maneja la respuesta de la petición
