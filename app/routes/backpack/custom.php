@@ -20,4 +20,5 @@ Route::group([
     Route::crud('dataset', 'Dataset\DatasetCrudController');
     Route::crud('api-tutorial', 'Dataset\ApiTutorialCrudController');
     Route::crud('mydataset', 'Dataset\MyDatasetCrudController');
+    Route::crud('purchase', 'Purchase\PurchaseCrudController');
 }); // this should be the absolute last line of this file

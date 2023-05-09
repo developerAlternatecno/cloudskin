@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dataread;
 use App\Models\Dataset;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -139,32 +140,6 @@ class DatasetController extends Controller
             return response(Storage::get($filePath), 200)
                 ->header('Content-Type', $mimeType)
                 ->header('Content-Disposition', 'attachment; filename=' . basename($filePath));
-
-        }catch (\Exception $e){
-            Log::error($e->getMessage());
-            return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
-        }
-    }
-
-    public function downloadProviderDoc($dataset_id){
-        try{
-            $dataset = Dataset::where('id', $dataset_id)->first();
-
-            if (!$dataset){
-                return response(['error' => 'dataset_not_found', 'message' => 'The dataset does not exist'], 404);
-            }
-
-            $filePath = str_replace(Storage::url(''), '', $dataset->provider_doc);
-            $filePath = '/public/'.$filePath;
-            // Obtener el tipo MIME del archivo
-            $mimeType = Storage::mimeType($filePath);
-
-            // Verificar si el archivo existe en el disco
-            if (!Storage::exists($filePath)) {
-                return response()->json(['mensaje' => 'Archivo no encontrado en el disco'], 404);
-            }
-
-            return response()->download(Storage::get($filePath), basename($filePath), ['Content-Type' => $mimeType]);
 
         }catch (\Exception $e){
             Log::error($e->getMessage());

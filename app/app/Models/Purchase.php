@@ -36,6 +36,8 @@ class Purchase extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['buyerName', 'datasetName'];
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -73,6 +75,16 @@ class Purchase extends Authenticatable
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    public function getBuyerNameAttribute(): string
+    {
+        return $this->user->name;
+    }
+
+    public function getDatasetNameAttribute(): string
+    {
+        return $this->dataset->name;
+    }
 
     /*
     |--------------------------------------------------------------------------

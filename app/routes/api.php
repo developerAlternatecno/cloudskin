@@ -34,3 +34,4 @@ Route::post('/datasets/{dataset_id}', [DatasetController::class, 'addDataRead'])
 Route::get('/datasets/{dataset_id}', [DatasetController::class, 'getDataReads']);
 Route::post('/datasets/{dataset_id}/purchase', [PurchaseController::class, 'createPurchase']);
 Route::get('/datasets/{dataset_id}/provider-doc', [DatasetController::class, 'getProviderDoc'])->name('provider-doc');
+Route::get('/purchases/{purchase_id}/buyer-doc', [PurchaseController::class, 'getBuyerDoc'])->name('buyer-doc');

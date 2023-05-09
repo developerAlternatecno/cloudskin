@@ -45,4 +45,32 @@ class PurchaseController extends Controller
         }
 
     }
+
+    public function getBuyerDoc($purchase_id){
+        try{
+            $purchase = Purchase::where('id', $purchase_id)->first();
+
+            if (!$purchase){
+                return response(['error' => 'purchase_not_found', 'message' => 'The purchase does not exist'], 404);
+            }
+
+            $filePath = str_replace(Storage::url(''), '', $purchase->buyer_doc);
+            // Obtener el tipo MIME del archivo
+            $mimeType = Storage::mimeType($filePath);
+
+            // Verificar si el archivo existe en el disco
+            if (!Storage::exists($filePath)) {
+                return response()->json(['mensaje' => 'Archivo no encontrado en el disco'], 404);
+            }
+
+            // Devolver el archivo como respuesta HTTP
+            return response(Storage::get($filePath), 200)
+                ->header('Content-Type', $mimeType)
+                ->header('Content-Disposition', 'attachment; filename=' . basename($filePath));
+
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+            return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
+        }
+    }
 }
