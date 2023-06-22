@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('delete:non-premium', function () {
+    $this->call('delete:non-premium');
+})->purpose('Delete the non-premium data stored longer than 1 year');
+
+

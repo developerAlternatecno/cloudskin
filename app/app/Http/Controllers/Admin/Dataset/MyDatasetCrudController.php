@@ -43,7 +43,7 @@ class MyDatasetCrudController extends CrudController
         $user_id = auth()->user()->id;
         $model = $this->crud->getModel();
         $this->crud->query = $model::whereHas('purchases', function ($query) use ($user_id) {
-            $query->where('user_id', $user_id);
+            $query->where('user_id', $user_id)->where('is_validated', true);
         });
 
         CRUD::column('name');
