@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Dataset;
 use App\Http\Controllers\Admin\Dataset\Operations\DatasetPurchaseOperation;
 use App\Models\Dataset;
 use App\Models\Engine;
-use app\Models\Dataread;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
@@ -81,14 +80,14 @@ class DatasetCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'dataset_name',
-            'label' => 'Nombre del dataset',
+            'label' => 'Dataset name',
             'type' => 'text',
             'required' => true,
         ]);
 
         $this->crud->addField([
             'name' => 'dataset_type',
-            'label' => 'Modo de venta',
+            'label' => 'Sales method',
             'type' => 'select_from_array',
             'required' => true,
             'options' => Dataset::DATASET_TYPES,
@@ -96,15 +95,15 @@ class DatasetCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'dataset_price',
-            'label' => 'Precio de venta (€)',
+            'label' => 'Selling price (€)',
             'type' => 'number',
             'required' => true,
-            'hint' => 'El precio de venta para casos de alquiler será mensual',
+            'hint' => 'The sales price for rental cases will be on a monthly basis.',
         ]);
 
         $this->crud->addField([
             'name' => 'dataset_license',
-            'label' => 'Licencia',
+            'label' => 'License',
             'type' => 'select_from_array',
             'required' => true,
             'options' => Dataset::DATASET_LICENSES,
@@ -112,16 +111,16 @@ class DatasetCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'dataset_description',
-            'label' => 'Descripción del dataset',
+            'label' => 'Dataset description',
             'type' => 'textarea',
             'required' => true,
         ]);
 
         $this->crud->addField([
             'name' => 'dataset_checkbox',
-            'label' => '¿ Datos geo-referenciados ?',
+            'label' => 'Geo-referenced data ?',
             'type' => 'checkbox',
-            'hint' => 'Si los datos son geo-referenciados, a la hora del envío de datos vía API será necesario indicar la latitud y longitud del punto de interés, mediante los campos "latitude" y "longitude".',
+            'hint' => 'If the data are geo-referenced, when sending data via API it will be necessary to indicate the latitude and longitude of the point of interest, using the "latitude" and "longitude" fields.',
         ]);
 
         $this->crud->addField([
@@ -134,12 +133,12 @@ class DatasetCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'engine_template',
-            'label' => 'Formato de los datos generados',
+            'label' => 'Format of generated data',
             'type' => 'repeatable', // tipo de campo
             'fields' => [
                 [
                     'name' => 'field_name',
-                    'label' => 'Nombre del campo',
+                    'label' => 'Field name',
                     'type' => 'text',
                     'required' => true,
                     'allows_null' => false,
@@ -149,7 +148,7 @@ class DatasetCrudController extends CrudController
                 ],
                 [
                     'name' => 'type',
-                    'label' => 'Tipo',
+                    'label' => 'Type',
                     'type' => 'select_from_array',
                     'options' => array_keys(Engine::ENGINE_TYPING),
                     'required' => true,
@@ -160,7 +159,7 @@ class DatasetCrudController extends CrudController
                 ],
                 [
                     'name' => 'field_unit',
-                    'label' => 'Unidad del valor',
+                    'label' => 'Value unit',
                     'type' => 'text',
                     'wrapperAttributes' => [
                         'class' => 'col-md-3',
@@ -168,15 +167,15 @@ class DatasetCrudController extends CrudController
                 ],
                 [
                     'name' => 'length',
-                    'label' => 'Longitud',
+                    'label' => 'Length',
                     'type' => 'number',
                     'wrapperAttributes' => [
                         'class' => 'col-md-3',
                     ],
                 ],
             ],
-            'new_item_label' => 'Añadir dato',
-            'hint' => 'El campo unidad es solo si es necesario, el campo longitud solo si el tipo es string',
+            'new_item_label' => 'Add data',
+            'hint' => 'The unit field is only if required, the length field only if the type is a string.',
         ]);
     }
 
