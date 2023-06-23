@@ -26,9 +26,9 @@ class Dataset extends Model
     ];
 
     const DATASET_LICENSES = [
-        'national' => 'Nacional',
-        'european' => 'Europea',
-        'unlimited' => 'Ilimitada'
+        'national' => 'National',
+        'european' => 'European',
+        'unlimited' => 'Unlimited'
     ];
 
     protected $appends = ['url', 'isPurchased'];
