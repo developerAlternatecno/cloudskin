@@ -104,7 +104,7 @@
           .then(response => {
             // Maneja la respuesta de la petición
             console.log(response);
-            window.location.href = "http://localhost:8080/admin/dataset";
+            window.location.href = "http://161.97.169.228:8096/admin/dataset";
 
           })
           .catch(error => {
