@@ -128,7 +128,7 @@ class Dataset extends Model
 
     public function datareads()
     {
-        return $this->hasMany(DataRead::class);
+        return $this->hasMany(Dataread::class);
     }
 
     public function purchases()
