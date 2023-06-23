@@ -225,7 +225,7 @@ class DatasetCrudController extends CrudController
         $this->crud->addColumns([
             [
                 'name' => 'table_html',
-                'label' => 'Últimos 5 registros',
+                'label' => 'Last 5 records',
                 'type' => 'custom_html',
                 'value' => Dataset::where('id', $this->crud->getCurrentEntry()->id)->first()->generateLastDataReadsTable(),
             ]
