@@ -22,6 +22,8 @@ class CreateDatasetsTable extends Migration
             $table->string("engine_id")->nullable();
             $table->foreign("engine_id")->references('id')->on('engines');
 
+            $table->string("parent_id")->nullable();
+
             $table->string('name')->nullable();
             $table->enum('type', ['buyout', 'rental'])->nullable();
             $table->float('price')->nullable();

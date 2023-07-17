@@ -63,5 +63,139 @@ class EngineSeeder extends Seeder
                 )
             )
         );
+
+        # TER21
+        DB::table('engines')->insert(
+            array(
+                'id' => '3',
+                'template'=> json_encode(
+                    [
+                        "Timestamp" =>[
+                            "type" => "string",
+                            "unit" => "",
+                            "length" => 19
+                        ],
+                        "DIA" => [
+                            "type" => "string",
+                            "unit" => "",
+                            "length" => null
+                        ],
+                        "kPa" => [
+                            "type" => "float",
+                            "unit" => "kPa",
+                            "length" => null
+                        ],
+                        "°C" => [
+                            "type" => "float",
+                            "unit" => "°C",
+                            "length" => null
+                        ]
+                    ]
+                )
+            )
+        );
+
+        # TER21.1
+        DB::table('engines')->insert(
+            array(
+                'id' => '4',
+                'template'=> json_encode(
+                    [
+                        "Timestamp" =>[
+                            "type" => "string",
+                            "unit" => "",
+                            "length" => 19
+                        ],
+                        "DIA" => [
+                            "type" => "string",
+                            "unit" => "",
+                            "length" => null
+                        ],
+                        "kPa" => [
+                            "type" => "float",
+                            "unit" => "kPa",
+                            "length" => null
+                        ],
+                        "°C" => [
+                            "type" => "float",
+                            "unit" => "°C",
+                            "length" => null
+                        ]
+                    ]
+                )
+            )
+        );
+
+        # TER12
+        DB::table('engines')->insert(
+            array(
+                'id' => '5',
+                'template'=> json_encode(
+                    [
+                        "Timestamp" =>[
+                            "type" => "string",
+                            "unit" => "",
+                            "length" => 19
+                        ],
+                        "DIA" => [
+                            "type" => "string",
+                            "unit" => "",
+                            "length" => null
+                        ],
+                        "%" => [
+                            "type" => "float",
+                            "unit" => "%",
+                            "length" => null
+                        ],
+                        "°C" => [
+                            "type" => "float",
+                            "unit" => "°C",
+                            "length" => null
+                        ],
+                        "uS/cm" => [
+                            "type" => "float",
+                            "unit" => "uS/cm",
+                            "length" => null
+                        ]
+                    ]
+                )
+            )
+        );
+
+        # TER12.1
+        DB::table('engines')->insert(
+            array(
+                'id' => '6',
+                'template'=> json_encode(
+                    [
+                        "Timestamp" =>[
+                            "type" => "string",
+                            "unit" => "",
+                            "length" => 19
+                        ],
+                        "DIA" => [
+                            "type" => "string",
+                            "unit" => "",
+                            "length" => null
+                        ],
+                        "%" => [
+                            "type" => "float",
+                            "unit" => "%",
+                            "length" => null
+                        ],
+                        "°C" => [
+                            "type" => "float",
+                            "unit" => "°C",
+                            "length" => null
+                        ],
+                        "uS/cm" => [
+                            "type" => "float",
+                            "unit" => "uS/cm",
+                            "length" => null
+                        ]
+                    ]
+                )
+            )
+        );
     }
 }

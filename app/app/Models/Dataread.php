@@ -41,6 +41,10 @@ class Dataread extends Model
             $type = Engine::ENGINE_TYPING[$engine_template[$key]['type']];
 
             if (gettype($value) != $type['type']) {
+                Log::info(gettype($value) . ' ' . $type['type']);
+                if ($type['type'] == 'double' && gettype($value) == 'integer') {
+                    continue;
+                }
                 $type_name = $engine_template[$key]['type'];
                 $error_message .= "The value type of the key '$key' must be '$type_name'. ";
             }
