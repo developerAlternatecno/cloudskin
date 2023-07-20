@@ -146,4 +146,25 @@ class DatasetController extends Controller
             return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
         }
     }
+
+    public function bulkCreation(Request $request, $dataset_id){
+        try{
+            $data = $request->json()->all();
+            foreach ($data as $key => $value){
+                foreach ($value as $new_dataread){
+                    $dataread = new Dataread();
+                    $dataread->dataset_id = $key;
+                    $dataread->data = $dataread->serialize($new_dataread['data']);
+                    $dataread->longitude = $new_dataread['longitude'] ?? null;
+                    $dataread->latitude = $new_dataread['latitude'] ?? null;
+                    $dataread->save();
+                }
+
+            }
+
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+            return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
+        }
+    }
 }
