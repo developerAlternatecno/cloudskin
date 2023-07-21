@@ -89,6 +89,7 @@ class DatasetController extends Controller
 
             $start_time = $request->input('start_time') ?? null;
             $end_time = $request->input('end_time') ?? null;
+            $pageSize = $request->input('pageSize') ?? 1000;
 
             $dataset = Dataset::where('id', $dataset_id)->first();
 
@@ -98,9 +99,9 @@ class DatasetController extends Controller
 
             # si start_time o end_time son null devolver error
             if ($start_time and $end_time){
-                $datareads = $dataset->datareads()->whereBetween('created_at', [$start_time, $end_time])->paginate(1000);
+                $datareads = $dataset->datareads()->whereBetween('created_at', [$start_time, $end_time])->paginate($pageSize);
             }else{
-                $datareads = $dataset->datareads()->paginate(1000);
+                $datareads = $dataset->datareads()->paginate($pageSize);
             }
 
             foreach ($datareads as $dataread){
