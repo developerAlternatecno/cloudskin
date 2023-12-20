@@ -15,5 +15,5 @@ use App\Http\Controllers\CustomRegisterController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/admin/login');
 });
