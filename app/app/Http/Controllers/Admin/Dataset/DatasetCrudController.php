@@ -102,14 +102,6 @@ class DatasetCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'name' => 'dataset_license',
-            'label' => 'License',
-            'type' => 'select_from_array',
-            'required' => true,
-            'options' => Dataset::DATASET_LICENSES,
-        ]);
-
-        $this->crud->addField([
             'name' => 'dataset_description',
             'label' => 'Dataset description',
             'type' => 'textarea',
@@ -121,6 +113,14 @@ class DatasetCrudController extends CrudController
             'label' => 'Geo-referenced data ?',
             'type' => 'checkbox',
             'hint' => 'If the data are geo-referenced, when sending data via API it will be necessary to indicate the latitude and longitude of the point of interest, using the "latitude" and "longitude" fields.',
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_license',
+            'label' => 'License',
+            'type' => 'select_from_array',
+            'required' => true,
+            'options' => Dataset::DATASET_LICENSES,
         ]);
 
         $this->crud->addField([

@@ -11,7 +11,12 @@ async function map_admin_pins(url){
 
     let data = await response.json();
     console.log(data)
-    draw_pins(data)
+
+    if (data.length > 0) {
+        draw_pins(data);
+    }
+
+    drawnMap()
 }
 
 function draw_pins(datareads){
@@ -30,6 +35,24 @@ function draw_pins(datareads){
         marker.addTo(map)
     });
 }
+
+function drawnMap() {
+    // Seleccionamos las coordenadas donde comienza el zoom del mapa
+    var map = L.map('map').setView([38.47652239055892, -1.3260276860442988], 9);
+
+    // Agregamos la capa (el mapa que vemos)
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a> hosted by <a href="https://openstreetmap.fr/" target="_blank">OpenStreetMap France</a>'
+    }).addTo(map);
+
+    // Obtenemos la URL
+    let url = document.getElementById("url").value
+
+    map_admin_pins(url);
+}
+
+
 // We select the coordinates where the map starts zooming
 var map = L.map('map').setView([38.47652239055892, -1.3260276860442988], 9);
 
