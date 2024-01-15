@@ -7,7 +7,7 @@ use Backpack\CRUD\app\Library\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 use Backpack\CRUD\app\Http\Controllers\Auth\RegisterController as BackpackRegisterController;
 use Illuminate\Support\Facades\Log;
 
@@ -37,6 +37,7 @@ class CustomRegisterController extends BackpackRegisterController
         ]);
     }
 
+
     public function showRegistrationForm()
     {
         // if registration is closed, deny access
@@ -49,23 +50,59 @@ class CustomRegisterController extends BackpackRegisterController
         return view(backpack_view('auth.register'), $this->data);
     }
 
+//     public function register(Request $request)
+//     {
+//         // if registration is closed, deny access
+//         if (! config('backpack.base.registration_open')) {
+//             abort(403, trans('backpack::base.registration_closed'));
+//         }
+
+//         Log::info($request->all());
+
+// //        $this->validator($request->all())->validate();
+
+//         $user = $this->create($request->all());
+
+//         if($user){
+//             event(new Registered($user));
+//             //$this->guard()->login($user);
+//             return redirect($this->redirectPath());
+//         }else{
+//             echo "Fallo";
+//         }
+//     }
+
     public function register(Request $request)
     {
-        // if registration is closed, deny access
-        if (! config('backpack.base.registration_open')) {
-            abort(403, trans('backpack::base.registration_closed'));
+        try {
+            // if registration is closed, deny access
+            if (!config('backpack.base.registration_open')) {
+                abort(403, trans('backpack::base.registration_closed'));
+            }
+
+            Log::info($request->all());
+
+            // Validar los datos del formulario
+            // $this->validator($request->all())->validate();
+
+            // Crear el usuario
+            $user = $this->create($request->all());
+
+            if ($user) {
+                event(new Registered($user));
+
+                // Autologin después del registro exitoso
+                $this->guard()->login($user);
+
+                return redirect($this->redirectPath());
+            } else {
+                // Enviar mensaje de fallo
+                echo "No se pudo realizasr el registro";
+            }
+        } catch (\Exception $e) {
+            // Manejar la excepción y mostrar un mensaje de error
+            echo "Error: " . $e->getMessage();
         }
-
-        Log::info($request->all());
-
-//        $this->validator($request->all())->validate();
-
-        $user = $this->create($request->all());
-
-        event(new Registered($user));
-        $this->guard()->login($user);
-
-        return redirect($this->redirectPath());
     }
 
     protected function create(array $data)
@@ -77,8 +114,10 @@ class CustomRegisterController extends BackpackRegisterController
             $user->name = $data['name'];
             $user->email = $data[backpack_authentication_column()];
             $user->password = bcrypt($data['password']);
+            $user->password_confirmation = bcrypt($data['password']);
             $user->nif = $data['nif'];
             $user->nationality = $data['nationality'];
+            $user->documento_identidad = $data['documento_identidad'];
 
             $user->save();
 

@@ -1,17 +1,13 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User; // Asegúrate de importar el modelo User si no está
+use App\Models\User;
 
 class CreateUsersAdminAlternatecno extends Migration
 {
     public function up()
     {
-        // Agregar columna o realizar otras modificaciones si es necesario
-
-        // Insertar nuevo usuario
         User::create([
             'name' => 'Admin Alternatecno',
             'email' => 'admin@alternatecno.es',
