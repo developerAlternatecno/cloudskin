@@ -132,6 +132,13 @@ class DatasetCrudController extends CrudController
         ]);
 
         $this->crud->addField([
+            'name' => 'autovalidate_sales',
+            'label' => 'Auto-validate sales',
+            'type' => 'checkbox',
+            'hint'=> 'Automatically validates sales if this field is checked.',
+        ]);
+
+        $this->crud->addField([
             'name' => 'engine_template',
             'label' => 'Format of generated data',
             'type' => 'repeatable', // tipo de campo
