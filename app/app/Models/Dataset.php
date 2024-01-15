@@ -21,7 +21,8 @@ class Dataset extends Model
     |--------------------------------------------------------------------------
     */
     const DATASET_TYPES = [
-        'buyout' => 'Compra',
+        'free' => 'Gratis',
+        'sale' => 'Compra',
         'rental' => 'Alquiler'
     ];
 
@@ -62,6 +63,7 @@ class Dataset extends Model
             $dataset->license = $request['dataset_license'];
             $dataset->description = $request['dataset_description'];
             $dataset->is_geolocated = $request['dataset_checkbox'];
+            $dataset->autovalidate_sales = $request['autovalidate_sales'];
             $dataset->provider_doc = $fileUrl ?? null;
 
             $dataset->save();
