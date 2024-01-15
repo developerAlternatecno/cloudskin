@@ -21,15 +21,18 @@ class Dataset extends Model
     |--------------------------------------------------------------------------
     */
     const DATASET_TYPES = [
-        'free' => 'Gratis',
-        'sale' => 'Compra',
-        'rental' => 'Alquiler'
+        'free' => 'Free',
+        'sale' => 'Sale',
+        'rental' => 'Rental'
     ];
 
     const DATASET_LICENSES = [
-        'national' => 'National',
-        'european' => 'European',
-        'unlimited' => 'Unlimited'
+        'Unrestricted public use license'=>'Unrestricted public use license',
+        'Public use license - include use restrictions'=>"Public use license - include use restrictions",
+        'Public use license with geographic restrictions'=>"Public use license with geographic restrictions",
+        'Proprietary license - include usage restrictions'=>"Proprietary license - include usage restrictions",
+        'Proprietary license - include geographic restrictions'=>"Proprietary license - include geographic restrictions"
+        
     ];
 
     protected $appends = ['url', 'isPurchased'];
