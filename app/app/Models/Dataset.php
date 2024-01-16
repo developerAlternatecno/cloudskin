@@ -150,7 +150,10 @@ class Dataset extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-
+    public function scopeAvailable($query)
+    {
+        return $query->whereDoesntHve('purchases');
+    }
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
