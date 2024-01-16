@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Purchase;
+namespace App\Http\Controllers\Admin\Sales;
 
-use App\Http\Controllers\Admin\Purchase\Operations\ShowPurchaseOperation;
-use App\Http\Requests\PurchaseRequest;
+use App\Http\Controllers\Admin\Sales\Operations\DenySalesOperation;
+use App\Http\Controllers\Admin\Sales\Operations\ValidateSalesOperation;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Event;
 
-use App\Models\Purchase;
-use Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
 /**
- * Class PurchaseCrudController
+ * Class SaleCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class PurchaseCrudController extends CrudController
+class SalesCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    // use ValidatePurchaseOperation;
-    // use DenyPurchaseOperation;
-    use ShowPurchaseOperation;
+    use ValidateSalesOperation;
+    use DenySalesOperation;
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      *
@@ -30,9 +26,9 @@ class PurchaseCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Purchase::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/purchase');
-        CRUD::setEntityNameStrings('purchase', 'purchases');
+        CRUD::setModel(\App\Models\Sale::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/sale');
+        CRUD::setEntityNameStrings('Sale', 'Sales');
     }
 
     /**
@@ -46,16 +42,19 @@ class PurchaseCrudController extends CrudController
         $user_id = Auth::id();
 
         // añadir un boton en línea
-        //$this->crud->addButton('line', 'buyer_doc', 'view', 'crud::buttons.buyer_doc', 'beginning');
+        $this->crud->addButton('line', 'buyer_doc', 'view', 'crud::buttons.buyer_doc', 'beginning');
 
-        $this->crud->addClause('where', 'user_id', $user_id);
-        $this->crud->addClause('where', 'is_validated', true);
+        $this->crud->addClause('whereHas', 'dataset', function($query) use($user_id) {
+            $query
+                ->where('user_id', $user_id)
+                ->where('is_validated', false);
+        });
 
-        // $this->crud->addColumn([
-        //     'label' => 'Comprador',
-        //     'type' => 'text',
-        //     'name' => 'buyerName'
-        // ]);
+        $this->crud->addColumn([
+            'label' => 'Buyer',
+            'type' => 'text',
+            'name' => 'buyerName'
+        ]);
 
         $this->crud->addColumn([
             'label' => 'Dataset',

@@ -4,8 +4,8 @@
 {{--<li class="nav-item"><a class="nav-link" href="{{ backpack_url('role') }}"><i class="nav-icon la la-id-badge"></i> <span>Roles</span></a></li>--}}
 {{--<li class="nav-item"><a class="nav-link" href="{{ backpack_url('permission') }}"><i class="nav-icon la la-key"></i> <span>Permissions</span></a></li>--}}
 
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('dataset') }}'><i class='nav-icon la la-question'></i> Datasets</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('dataset') }}'><i class='nav-icon la la-question'></i> Available Datasets</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('/mydataset') }}'><i class='nav-icon la la-question'></i> My Datasets</a></li>
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('api-tutorial') }}'><i class='nav-icon la la-question'></i> Tutorial</a></li>
-
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('sale') }}'><i class='nav-icon la la-question'></i> Sales</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('purchase') }}'><i class='nav-icon la la-question'></i> Purchases</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('api-tutorial') }}'><i class='nav-icon la la-question'></i> Tutorial</a></li>

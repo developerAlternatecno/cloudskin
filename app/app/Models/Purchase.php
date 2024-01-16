@@ -48,6 +48,7 @@ class Purchase extends Authenticatable
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -63,7 +64,7 @@ class Purchase extends Authenticatable
     {
         return $this->belongsTo(Dataset::class);
     }
-
+    
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -76,10 +77,10 @@ class Purchase extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
-    public function getBuyerNameAttribute(): string
-    {
-        return $this->user->name;
-    }
+    // public function getBuyerNameAttribute(): string
+    // {
+    //     return $this->user->name;
+    // }
 
     public function getDatasetNameAttribute(): string
     {

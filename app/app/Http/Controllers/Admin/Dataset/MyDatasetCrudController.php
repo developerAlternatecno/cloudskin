@@ -29,7 +29,7 @@ class MyDatasetCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Dataset::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/mydataset');
-        CRUD::setEntityNameStrings('My dataset', 'My datasets');
+        CRUD::setEntityNameStrings('My Dataset', 'My Datasets');
     }
 
     /**
@@ -42,10 +42,14 @@ class MyDatasetCrudController extends CrudController
     {
         $user_id = auth()->user()->id;
         $model = $this->crud->getModel();
+        /*
         $this->crud->query = $model::whereHas('purchases', function ($query) use ($user_id) {
-            $query->where('user_id', $user_id)->where('is_validated', true);
+        $query->where('user_id', $user_id)->where('is_validated', true);
         });
-
+        */
+        $this->crud->query = $model::whereHas('user', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        });
         CRUD::column('name');
         CRUD::column('description');
         $this->crud->addColumn([

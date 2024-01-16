@@ -35,7 +35,7 @@ class DatasetCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Dataset::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/dataset');
-        CRUD::setEntityNameStrings('dataset', 'datasets');
+        CRUD::setEntityNameStrings('Dataset', 'Available Datasets');
     }
 
     /**
