@@ -113,9 +113,39 @@ class DatasetCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'dataset_checkbox',
+            'id' => 'dataset_checkbox',  
             'label' => 'Geo-referenced data ?',
             'type' => 'checkbox',
             'hint' => 'If the data are geo-referenced, when sending data via API it will be necessary to indicate the latitude and longitude of the point of interest, using the "latitude" and "longitude" fields.',
+            'default' => false,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'latitude',
+            'label' => 'Latitude',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6', // Ajusta la clase de ancho según tus necesidades
+                'style' => 'display:none;', // Oculta el campo por defecto
+                'id' => 'latitude-field',
+            ],
+            'attributes' => [
+                'class' => 'form-control',
+            ],
+        ]);
+
+        $this->crud->addField([
+            'name' => 'longitude',
+            'label' => 'Longitude',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6', // Ajusta la clase de ancho según tus necesidades
+                'style' => 'display:none;', // Oculta el campo por defecto
+                'id' => 'longitude-field',
+            ],
+            'attributes' => [
+                'class' => 'form-control',
+            ],
         ]);
 
         $this->crud->addField([
@@ -185,7 +215,6 @@ class DatasetCrudController extends CrudController
                 ],
             ],
             'new_item_label' => 'Add data',
-            'hint' => 'The unit field is only if required, the length field only if the type is a string.',
         ]);
     }
 
