@@ -198,17 +198,9 @@ class DatasetCrudController extends CrudController
                     ],
                 ],
                 [
-                    'name' => 'field_unit',
-                    'label' => 'Value unit',
-                    'type' => 'text',
-                    'wrapperAttributes' => [
-                        'class' => 'col-md-3',
-                    ],
-                ],
-                [
-                    'name' => 'length',
-                    'label' => 'Length',
-                    'type' => 'number',
+                    'name' => 'description',
+                    'label' => 'Description',
+                    'type' => 'textarea',
                     'wrapperAttributes' => [
                         'class' => 'col-md-3',
                     ],

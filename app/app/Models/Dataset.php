@@ -66,6 +66,8 @@ class Dataset extends Model
             $dataset->license = $request['dataset_license'];
             $dataset->description = $request['dataset_description'];
             $dataset->is_geolocated = $request['dataset_checkbox'];
+            $dataset->latitude = $request['latitude'];
+            $dataset->longitude = $request['longitude'];
             $dataset->autovalidate_sales = $request['autovalidate_sales'];
             $dataset->provider_doc = $fileUrl ?? null;
 
