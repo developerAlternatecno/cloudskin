@@ -68,7 +68,19 @@
                     $('#latitude-field').hide();
                     $('#longitude-field').hide();
                 }
-          })
+          });
+
+        $(document).on('change', $('[name="dataset_data_type"]'), function() {
+        var valDataType = $('[name="dataset_data_type"]').val();
+        if(valDataType == 'Static Data'){
+            $('#static_data_upload').show();
+            $('#realtime_data_upload').hide();
+        }else{
+            $('#static_data_upload').hide();
+            $('#realtime_data_upload').show();
+        }
+        });
+
         })
 
         jQuery('document').ready(function($){
