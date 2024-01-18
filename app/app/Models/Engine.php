@@ -51,8 +51,7 @@ class Engine extends Model
             foreach(json_decode($engine_template ) as $template_value){
                 $template[$template_value->field_name] = [
                     'type' => array_keys(Engine::ENGINE_TYPING)[$template_value->type],
-                    'length' => (int) $template_value->length == 0 ? null : (int) $template_value->length,
-                    'unit' => $template_value->field_unit,
+                    'description' => $template_value->description ? $template_value->description : null,
                 ];
             }
 

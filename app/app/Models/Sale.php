@@ -3,28 +3,20 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasPermissions;
-use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class Sale extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, CrudTrait, HasPermissions, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable, CrudTrait;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -36,6 +28,9 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    
+    protected $table = 'purchases';
+
     /**
      * The attributes that should be cast.
      *
@@ -44,6 +39,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['buyerName', 'datasetName'];
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -54,26 +51,24 @@ class User extends Authenticatable
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
 
-    public function datasets()
+    public function user()
     {
-        return $this->hasMany(Dataset::class);
-    }
-    public function purchases()
-    {
-        return $this->hasMany(Purchase::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function sales()
+    public function dataset()
     {
-        return $this->hasMany(Sale::class);
+        return $this->belongsTo(Dataset::class);
     }
 
+    
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -85,6 +80,21 @@ class User extends Authenticatable
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    public function getBuyerNameAttribute(): string
+    {
+        return $this->user->name;
+    }
+
+    public function getDatasetNameAttribute(): string
+    {
+        return $this->dataset->name;
+    }
+
+    public function getOwnerDataset(): int
+    {
+        return $this->dataset->user_id;
+    }
 
     /*
     |--------------------------------------------------------------------------

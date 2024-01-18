@@ -35,7 +35,7 @@ class DatasetCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Dataset::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/dataset');
-        CRUD::setEntityNameStrings('dataset', 'datasets');
+        CRUD::setEntityNameStrings('Dataset', 'Available Datasets');
     }
 
     /**
@@ -48,9 +48,12 @@ class DatasetCrudController extends CrudController
     {
         CRUD::column('name');
         CRUD::column('description');
+        CRUD::column('location');
         CRUD::column('url');
         CRUD::column('type');
         CRUD::column('updated_at');
+
+        $this->crud->addClause('whereDoesntHave', 'purchases');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -102,14 +105,6 @@ class DatasetCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'name' => 'dataset_license',
-            'label' => 'License',
-            'type' => 'select_from_array',
-            'required' => true,
-            'options' => Dataset::DATASET_LICENSES,
-        ]);
-
-        $this->crud->addField([
             'name' => 'dataset_description',
             'label' => 'Dataset description',
             'type' => 'textarea',
@@ -118,9 +113,47 @@ class DatasetCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'dataset_checkbox',
+            'id' => 'dataset_checkbox',  
             'label' => 'Geo-referenced data ?',
             'type' => 'checkbox',
             'hint' => 'If the data are geo-referenced, when sending data via API it will be necessary to indicate the latitude and longitude of the point of interest, using the "latitude" and "longitude" fields.',
+            'default' => false,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'latitude',
+            'label' => 'Latitude',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6', // Ajusta la clase de ancho según tus necesidades
+                'style' => 'display:none;', // Oculta el campo por defecto
+                'id' => 'latitude-field',
+            ],
+            'attributes' => [
+                'class' => 'form-control',
+            ],
+        ]);
+
+        $this->crud->addField([
+            'name' => 'longitude',
+            'label' => 'Longitude',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-6', // Ajusta la clase de ancho según tus necesidades
+                'style' => 'display:none;', // Oculta el campo por defecto
+                'id' => 'longitude-field',
+            ],
+            'attributes' => [
+                'class' => 'form-control',
+            ],
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_license',
+            'label' => 'License',
+            'type' => 'select_from_array',
+            'required' => true,
+            'options' => Dataset::DATASET_LICENSES,
         ]);
 
         $this->crud->addField([
@@ -129,6 +162,13 @@ class DatasetCrudController extends CrudController
             'type' => 'upload',
             'upload' => true,
             'hint'=> 'Upload a optional data use contract, if you do, you will have to validate manually that the buyer has signed the contract.',
+        ]);
+
+        $this->crud->addField([
+            'name' => 'autovalidate_sales',
+            'label' => 'Auto-validate sales',
+            'type' => 'checkbox',
+            'hint'=> 'Automatically validates sales if this field is checked.',
         ]);
 
         $this->crud->addField([
@@ -158,24 +198,15 @@ class DatasetCrudController extends CrudController
                     ],
                 ],
                 [
-                    'name' => 'field_unit',
-                    'label' => 'Value unit',
-                    'type' => 'text',
-                    'wrapperAttributes' => [
-                        'class' => 'col-md-3',
-                    ],
-                ],
-                [
-                    'name' => 'length',
-                    'label' => 'Length',
-                    'type' => 'number',
+                    'name' => 'description',
+                    'label' => 'Description',
+                    'type' => 'textarea',
                     'wrapperAttributes' => [
                         'class' => 'col-md-3',
                     ],
                 ],
             ],
             'new_item_label' => 'Add data',
-            'hint' => 'The unit field is only if required, the length field only if the type is a string.',
         ]);
     }
 

@@ -21,7 +21,8 @@ Route::group([
 ], function () { // custom admin routes
     Route::crud('engine', 'Engine\EngineCrudController');
     Route::crud('dataset', 'Dataset\DatasetCrudController');
-    Route::crud('api-tutorial', 'Dataset\ApiTutorialCrudController');
     Route::crud('mydataset', 'Dataset\MyDatasetCrudController');
     Route::crud('purchase', 'Purchase\PurchaseCrudController');
+    Route::crud('sale', 'Sales\SalesCrudController');
+    Route::crud('api-tutorial', 'Dataset\ApiTutorialCrudController');
 }); // this should be the absolute last line of this file

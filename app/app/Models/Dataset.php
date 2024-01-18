@@ -21,14 +21,18 @@ class Dataset extends Model
     |--------------------------------------------------------------------------
     */
     const DATASET_TYPES = [
-        'buyout' => 'Compra',
-        'rental' => 'Alquiler'
+        'free' => 'Free',
+        'sale' => 'Sale',
+        'rental' => 'Rental'
     ];
 
     const DATASET_LICENSES = [
-        'national' => 'National',
-        'european' => 'European',
-        'unlimited' => 'Unlimited'
+        'Unrestricted public use license'=>'Unrestricted public use license',
+        'Public use license - include use restrictions'=>"Public use license - include use restrictions",
+        'Public use license with geographic restrictions'=>"Public use license with geographic restrictions",
+        'Proprietary license - include usage restrictions'=>"Proprietary license - include usage restrictions",
+        'Proprietary license - include geographic restrictions'=>"Proprietary license - include geographic restrictions"
+        
     ];
 
     protected $appends = ['url', 'isPurchased'];
@@ -62,6 +66,9 @@ class Dataset extends Model
             $dataset->license = $request['dataset_license'];
             $dataset->description = $request['dataset_description'];
             $dataset->is_geolocated = $request['dataset_checkbox'];
+            $dataset->latitude = $request['latitude'];
+            $dataset->longitude = $request['longitude'];
+            $dataset->autovalidate_sales = $request['autovalidate_sales'];
             $dataset->provider_doc = $fileUrl ?? null;
 
             $dataset->save();
@@ -135,12 +142,20 @@ class Dataset extends Model
     {
         return $this->hasMany(Purchase::class);
     }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
-
+    public function scopeAvailable($query)
+    {
+        return $query->whereDoesntHve('purchases');
+    }
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
