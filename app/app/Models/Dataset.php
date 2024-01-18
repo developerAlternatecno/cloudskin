@@ -35,6 +35,11 @@ class Dataset extends Model
         
     ];
 
+    const DATASET_TYPES_DATA = [
+        'Static Data' => 'Static Data',
+        'Real Time Data' => 'Real Time Data' 
+    ];
+
     protected $appends = ['url', 'isPurchased'];
 
     protected $keyType = 'string';
@@ -54,6 +59,12 @@ class Dataset extends Model
                 $fileUrl = Storage::url($filePath);
             }
 
+            $fileData = $request->file('static_data_upload') ?? null;
+            if ($fileData){
+                $fileDataPath = $fileData->store('/public/datasets/'.$dataset_id."/dataFile");
+                $fileDataUrl = Storage::url($fileDataPath);
+            }
+
             $dataset = new Dataset();
             $dataset->id = $dataset_id;
 
@@ -70,6 +81,8 @@ class Dataset extends Model
             $dataset->longitude = $request['longitude'];
             $dataset->autovalidate_sales = $request['autovalidate_sales'];
             $dataset->provider_doc = $fileUrl ?? null;
+            $dataset->data_type = $request['dataset_data_type'];
+            $dataset->data_url = isset($fileDataUrl) ? $fileDataUrl : $request['realtime_data_upload'];
 
             $dataset->save();
 

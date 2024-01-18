@@ -208,6 +208,44 @@ class DatasetCrudController extends CrudController
             ],
             'new_item_label' => 'Add data',
         ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_data_type',
+            'label' => 'DataType Upload',
+            'type' => 'select_from_array',
+            'required' => true,
+            'options' => Dataset::DATASET_TYPES_DATA,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'static_data_upload',
+            'label' => 'File Data',
+            'type' => 'upload',
+            'upload' => true,
+            'hint'=> 'Upload the data file.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12', // Ajusta la clase de ancho según tus necesidades
+                'style' => 'display:none;', // Oculta el campo por defecto
+                'id' => 'static_data_upload',
+            ]
+        ]);
+
+        $this->crud->addField([
+            'name' => 'realtime_data_upload',
+            'label' => 'URL Data',
+            'type' => 'text',
+            'upload' => true,
+            'hint'=> 'Insert the url data.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-md-12', // Ajusta la clase de ancho según tus necesidades
+                'style' => 'display:none;', // Oculta el campo por defecto
+                'id' => 'realtime_data_upload',
+            ],
+            'attributes' => [
+                'class' => 'form-control',
+            ],
+        ]);
+
     }
 
 
