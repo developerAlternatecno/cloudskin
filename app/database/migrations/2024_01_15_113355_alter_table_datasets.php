@@ -9,6 +9,9 @@ class AlterTableDatasets extends Migration
 {
     public function up()
     {
+        // Actualizar registros existentes para cambiar 'buyout' a 'sale' en la columna "type"
+        DB::table('datasets')->where('type', 'buyout')->update(['type' => 'sale']);
+
         // Actualizar el tipo de columna 'type' a ENUM
         DB::statement("ALTER TABLE datasets MODIFY COLUMN type ENUM('sale', 'rental', 'free') DEFAULT NULL");
 
