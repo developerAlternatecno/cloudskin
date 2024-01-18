@@ -49,7 +49,7 @@ class DatasetCrudController extends CrudController
         CRUD::column('name');
         CRUD::column('description');
         CRUD::column('location');
-        CRUD::column('url');
+        // CRUD::column('url');
         CRUD::column('type');
         CRUD::column('updated_at');
 
@@ -113,7 +113,7 @@ class DatasetCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'dataset_checkbox',
-            'id' => 'dataset_checkbox',  
+            'id' => 'dataset_checkbox',
             'label' => 'Geo-referenced data ?',
             'type' => 'checkbox',
             'hint' => 'If the data are geo-referenced, when sending data via API it will be necessary to indicate the latitude and longitude of the point of interest, using the "latitude" and "longitude" fields.',
@@ -286,7 +286,7 @@ class DatasetCrudController extends CrudController
     {
         CRUD::column('created_at');
         CRUD::column('description');
-        CRUD::column('url');
+        // CRUD::column('url');
         CRUD::column('type');
 
 
