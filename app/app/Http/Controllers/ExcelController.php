@@ -26,7 +26,7 @@ class ExcelController extends Controller
             $pythonScript = realpath($pythonScript);
 
             // Especificar la ruta completa al ejecutable de Python en el comando
-            $command = "python3 \"{$pythonScript}\" \"{$filePath}\" \"{$url}\" \"{$latitude}\" \"{$longitude}\" 2>&1";
+            $command = "python \"{$pythonScript}\" \"{$filePath}\" \"{$url}\" \"{$latitude}\" \"{$longitude}\" 2>&1";
 
             // Ejecutar el comando y obtener la salida y el código de retorno
             exec($command, $outputArray, $resultCode);
