@@ -94,7 +94,7 @@ class CustomRegisterController extends BackpackRegisterController
                 // Autologin después del registro exitoso
                 $this->guard()->login($user);
 
-                return redirect($this->redirectPath());
+                return redirect($this->redirectPath() . '/dashboard');
             } else {
                 // Enviar mensaje de fallo
                 echo "No se pudo realizasr el registro";
