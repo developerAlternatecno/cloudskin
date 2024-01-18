@@ -1,0 +1,1 @@
+<a href="{{backpack_url('sale/'.$entry->id."/validate_sale")}}" class="btn btn-sm btn-link"><i class="las la-check"></i>Validate</a>
