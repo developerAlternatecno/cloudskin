@@ -12,6 +12,7 @@ class CreateUsersAdminAlternatecno extends Migration
             'name' => 'Admin Alternatecno',
             'email' => 'admin@alternatecno.es',
             'password' => Hash::make('2D8kdyULu4ZrY8'),
+            'nif'      => '00000000A'
         ]);
     }
 
