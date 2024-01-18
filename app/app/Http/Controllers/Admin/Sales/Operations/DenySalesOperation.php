@@ -37,15 +37,17 @@ trait DenySalesOperation
         });
 
         $this->crud->operation('list', function () {
-            $this->crud->addButton('line', 'deny_sale', 'view', 'crud::buttons.deny_sale', 'end');
+            $this->crud->addButton('line', 'deny_sale', 'view', 'vendor.backpack.crud.buttons.deny_sale', 'end');
         });
     }
 
     public function deny_sale()
     {
+
+
         try
         {
-            $this->crud->hasAccessOrFail('sale_sale');
+            $this->crud->hasAccessOrFail('deny_sale');
 
             $sale = $this->crud->getCurrentEntry();
 

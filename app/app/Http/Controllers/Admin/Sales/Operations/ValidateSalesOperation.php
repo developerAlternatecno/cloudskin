@@ -18,10 +18,10 @@ trait ValidateSalesOperation
      */
     protected function setupValidatePurchaseRoutes($segment, $routeName, $controller)
     {
-        Route::get($segment.'/{id}/validate_purchase', [
-            'as'        => $routeName.'.validate_purchase',
-            'uses'      => $controller.'@validate_purchase',
-            'operation' => 'validate_purchase',
+        Route::get($segment.'/{id}/validate_sale', [
+            'as'        => $routeName.'.validate_sale',
+            'uses'      => $controller.'@validate_sale',
+            'operation' => 'validate_sale',
         ]);
     }
 
@@ -37,11 +37,11 @@ trait ValidateSalesOperation
         });
 
         $this->crud->operation('list', function () {
-            $this->crud->addButton('line', 'validate_purchase', 'view', 'crud::buttons.validate_purchase', 'beginning');
+            $this->crud->addButton('line', 'validate_sale', 'view', 'crud::buttons.validate_sale', 'beginning');
         });
     }
 
-    public function validate_purchase()
+    public function validate_sale()
     {
         try
         {
@@ -50,21 +50,21 @@ trait ValidateSalesOperation
             $purchase = $this->crud->getCurrentEntry();
 
             if (!$purchase){
-                Alert::error("Purchase does not exist")->flash();
+                Alert::error("Sale does not exist")->flash();
                 return Redirect::to(backpack_url('/sale'));
             }
 
             $purchase->is_validated = true;
             $purchase->save();
 
-            Alert::success("Purchase validated correctly")->flash();
+            Alert::success("Sale validated correctly")->flash();
 
             return Redirect::to(backpack_url('/sale'));
         }
         catch (\Exception $e)
         {
             Log::info($e->getMessage());
-            Alert::error("Error while validating the purchase")->flash();
+            Alert::error("Error while validating the sale")->flash();
             return Redirect::to(backpack_url('/sale'));
         }
     }
