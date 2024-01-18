@@ -18,6 +18,12 @@ class AlterTableDatasets extends Migration
         // Actualizar el tipo de columna 'type' a ENUM
         DB::statement("ALTER TABLE datasets MODIFY COLUMN type ENUM('sale', 'rental', 'free') DEFAULT NULL");
 
+        // Eliminar temporalmente la restricción ENUM en la columna 'license'
+        DB::statement("ALTER TABLE datasets MODIFY COLUMN license VARCHAR(255) DEFAULT NULL");
+
+        // Actualizar todos los registros existentes en la columna "license" a 'Unrestricted public use license'
+        DB::table('datasets')->update(['license' => 'Unrestricted public use license']);
+
         // Actualizar el tipo de columna 'license' a ENUM con nuevas opciones
         DB::statement("ALTER TABLE datasets MODIFY COLUMN license ENUM('Unrestricted public use license', 'Public use license - include use restrictions', 'Public use license with geographic restrictions', 'Proprietary license - include usage restrictions', 'Proprietary license - include geographic restrictions') DEFAULT NULL");
 
