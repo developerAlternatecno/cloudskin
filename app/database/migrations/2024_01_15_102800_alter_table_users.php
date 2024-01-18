@@ -10,7 +10,7 @@ class AlterTableUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('password_confirmation', 255)->nullable()->after('password');
-            $table->string('nationality', 30)->nullable()->after('password_confirmation');
+            //$table->string('nationality', 30)->nullable()->after('password_confirmation');
             //$table->string('nif', 9)->nullable()->after('nationality');
             $table->string('documento_identidad', 250)->nullable()->after('nif');
             
@@ -25,7 +25,7 @@ class AlterTableUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('nationality');
+            //$table->dropColumn('nationality');
             ///$table->dropColumn('nif');
             $table->dropColumn('documento_identidad');
         });
