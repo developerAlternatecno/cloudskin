@@ -9,6 +9,9 @@ class AlterTableDatasets extends Migration
 {
     public function up()
     {
+        // Eliminar restricción ENUM temporalmente
+        DB::statement("ALTER TABLE datasets MODIFY COLUMN type VARCHAR(255) DEFAULT NULL");
+
         // Actualizar registros existentes para cambiar 'buyout' a 'sale' en la columna "type"
         DB::table('datasets')->where('type', 'buyout')->update(['type' => 'sale']);
 
