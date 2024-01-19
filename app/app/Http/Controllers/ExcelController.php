@@ -12,7 +12,6 @@ class ExcelController extends Controller
         try {
             $output = [];
             $returnVar = 0;
-    
             // Construir el comando con parámetros
             $command = "python3 python/excel-to-json.py";
             $command .= " --file=" . escapeshellarg($filePath);
