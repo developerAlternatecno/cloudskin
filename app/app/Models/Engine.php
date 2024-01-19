@@ -50,7 +50,8 @@ class Engine extends Model
             $template = [];
             foreach(json_decode($engine_template ) as $template_value){
 
-                $length = null; // longitud predeterminada
+                $length = ''; // longitud predeterminada
+                $unit = '';
                 // Personalizar la longitud según el nombre
                 if ($template_value->field_name === 'Timestamp') {
                     $length = 19;
@@ -62,7 +63,9 @@ class Engine extends Model
                     'type' => array_keys(Engine::ENGINE_TYPING)[$template_value->type],
                     'description' => $template_value->description ? $template_value->description : null,
                     'length'    => $length,
+                    'unit'    => $unit,
                 ];
+                
             }
 
             $engine_id = Str::uuid()->toString();
