@@ -62,8 +62,7 @@ class Dataset extends Model
 
             $fileData = $request->file('static_data_upload') ?? null;
             if ($fileData){
-                $fileDataPath = $fileData->store('/app/storage/app/storage/app/public/'.$dataset_id."/dataFile");
-
+                $fileDataPath = $fileData->store('/public/datasets/'.$dataset_id."/dataFile");
                 $fileDataUrl = Storage::url($fileDataPath);
             }
 
@@ -88,7 +87,10 @@ class Dataset extends Model
 
             $dataset->save();
 
-            ExcelController::processExcel($fileDataPath,$dataset->engine_id,$dataset->latitude,$dataset->longitude);
+
+            if($fileDataUrl !== null){
+                ExcelController::processExcel($fileDataPath,$dataset->engine_id,$dataset->latitude,$dataset->longitude);
+            }
 
             return true;
         }catch(\Exception $e){
