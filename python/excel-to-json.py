@@ -10,6 +10,10 @@ from typing import Optional
 
 def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude: Optional[float]=None):
     print('Entro a upload_data')
+
+    if excel_file_path:
+        excel_file_path = os.path.join("/app/storage/app/", excel_file_path)
+    
     # logging.basicConfig(level=logging.INFO)
     # logger = logging.getLogger(__name__)
     # logger.info(f'Procesando archivo Excel: {excel_file_path}')
@@ -94,11 +98,5 @@ parser.add_argument('--url')
 parser.add_argument('--latitude')
 parser.add_argument('--longitude')
 args = parser.parse_args()
-
-# Obtén la ruta al directorio 'storage' en Laravel
-laravel_storage_path = os.path.join(os.path.dirname(__file__), 'storage', 'app', 'public')
-
-# Construye la ruta completa al archivo Excel dentro del directorio 'storage' de Laravel
-excel_file_path = os.path.join(laravel_storage_path, args.file)
 
 upload_data(args.file, args.url, args.latitude, args.longitude)
