@@ -13,7 +13,7 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
 
 
     if excel_file_path:
-        excel_file_path = os.path.join("CloudSkin/cloudksin/app/storage/app/", excel_file_path)
+        excel_file_path = os.path.join("CloudSkin/cloudskin/app/storage/app/", excel_file_path)
     
     # logging.basicConfig(level=logging.INFO)
     # logger = logging.getLogger(__name__)
