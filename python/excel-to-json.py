@@ -11,6 +11,7 @@ from typing import Optional
 def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude: Optional[float]=None):
     print('Entro a upload_data')
 
+    print("Contenido de la carpeta 'storage':", os.listdir("app/storage/app/public/datasets/"))
 
     if excel_file_path:
         excel_file_path = os.path.join("CloudSkin/cloudskin/app/storage/app/", excel_file_path)
