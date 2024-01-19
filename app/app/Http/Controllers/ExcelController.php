@@ -7,47 +7,30 @@ use Illuminate\Support\Facades\Log;
 
 class ExcelController extends Controller
 {
-    public static function processExcel($filePath, $url, $latitude, $longitude)
+    public static function processExcel($filePath = null, $url = null, $latitude = 0, $longitude = 0)
     {
         try {
-            // Ruta al script de Python
-            $pythonScript = base_path("python/excel-to-json.py");
-
-            // Convierte las barras invertidas a barras inclinadas
-            $pythonScript = str_replace('\\', '/', $pythonScript);
-
-            // Verificar que el script de Python existe
-            if (!file_exists($pythonScript)) {
-                Log::error("El script de Python no existe en la ruta especificada: $pythonScript");
-                return;
-            }
-
-            // Especificar la ruta completa al script de Python
-            $pythonScript = realpath($pythonScript);
-
-            // Especificar la ruta completa al ejecutable de Python en el comando
-            $command = "python \"{$pythonScript}\" \"{$filePath}\" \"{$url}\" \"{$latitude}\" \"{$longitude}\" 2>&1";
-
-            // Ejecutar el comando y obtener la salida y el código de retorno
-            exec($command, $outputArray, $resultCode);
-
-            // Imprimir la salida y el código de retorno para depuración
-            Log::info("Ejecutando comando: $command");
-            Log::info("Salida del comando: " . implode("\n", $outputArray));
-
-            // Analizar la salida para obtener información adicional si es necesario
-            if (strpos(strtolower(implode("\n", $outputArray)), 'error') !== false) {
-                Log::error("La salida del comando contiene un mensaje de error.");
+            $output = [];
+            $returnVar = 0;
+    
+            // Ejecutar el script de prueba
+            exec('/usr/bin/python3 python/excel-to-json.py 2>&1', $output, $returnVar);
+    
+            if ($returnVar === 0) {
+                // Éxito
+                return implode(PHP_EOL, $output);
             } else {
-                Log::info("La salida del comando no contiene mensajes de error.");
+                // Error
+                $errorOutput = implode(PHP_EOL, $output);
+                Log::error("Error al ejecutar el script de Python. Código de retorno: $returnVar");
+                Log::error("Salida del comando: $errorOutput");
+                return "Error al ejecutar el script de Python. Código de retorno: $returnVar. Salida del comando: $errorOutput";
             }
-
-            // Imprimir un mensaje de éxito
-            Log::info("Procesamiento del archivo Excel completado exitosamente");
-
         } catch (\Exception $e) {
-            Log::error("Error while processing Excel file");
-            Log::error($e->getMessage());
+            // Manejar excepciones
+            Log::error("Excepción: " . $e->getMessage());
+            return "Excepción: " . $e->getMessage();
         }
     }
+    
 }
