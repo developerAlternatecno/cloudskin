@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+use App\Http\Controllers\ExcelController;
 class Dataset extends Model
 {
     use \Backpack\CRUD\app\Models\Traits\CrudTrait;
@@ -85,6 +86,8 @@ class Dataset extends Model
             $dataset->data_url = isset($fileDataUrl) ? $fileDataUrl : $request['realtime_data_upload'];
 
             $dataset->save();
+
+            //ExcelController::processExcel($fileDataPath,$dataset->engine_id,$dataset->latitude,$dataset->longitude);
 
             return true;
         }catch(\Exception $e){
