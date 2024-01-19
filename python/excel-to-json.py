@@ -4,6 +4,7 @@ import codecs
 import time
 import json
 import logging
+import argparse
 from typing import Optional
 
 def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude: Optional[float]=None):
@@ -85,4 +86,16 @@ def replace_escape_chars(key):
 excel_file_path = "/var/www/html/storage/app/public/datasets/b2ba10a6-9566-4b65-bbc9-559d6c84a9d2/dataFile/vPAfSfYn5Xtd2WgnQcENlPLfpZX8Q0DKW9t5dCVN.xlsx"
 url = "https://cloudskin.alternatecno.es/api/datasets/50949499-58b3-43d3-8896-711b2fd52984"
 
-upload_data(excel_file_path, url)
+
+parser = argparse.ArgumentParser(
+                    prog='ProgramName',
+                    description='What the program does',
+                    epilog='Text at the bottom of help')
+
+parser.add_argument('--file')
+parser.add_argument('--url')
+parser.add_argument('--latitude')
+parser.add_argument('--longitude')
+args = parser.parse_args()
+
+upload_data(args.file, args.url, args.latitude, args.longitude)
