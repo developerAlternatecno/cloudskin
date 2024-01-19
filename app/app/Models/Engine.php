@@ -49,9 +49,19 @@ class Engine extends Model
         try{
             $template = [];
             foreach(json_decode($engine_template ) as $template_value){
+
+                $length = $template_value->length; // longitud predeterminada
+                // Personalizar la longitud según el nombre
+                if ($template_value->field_name === 'Timestamp') {
+                    $length = 19;
+                } elseif ($template_value->field_name === 'DIA') {
+                    $length = 6;
+                }
+
                 $template[$template_value->field_name] = [
                     'type' => array_keys(Engine::ENGINE_TYPING)[$template_value->type],
                     'description' => $template_value->description ? $template_value->description : null,
+                    'length'    => $length,
                 ];
             }
 
