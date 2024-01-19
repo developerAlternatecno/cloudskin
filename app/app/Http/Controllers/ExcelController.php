@@ -13,11 +13,21 @@ class ExcelController extends Controller
             $output = [];
             $returnVar = 0;
     
-            // Ejecutar el script de prueba
-            exec('/usr/bin/python3 python/excel-to-json.py 2>&1', $output, $returnVar);
+            // Construir el comando con parámetros
+            $command = "python3 python/excel-to-json.py";
+            $command .= " --file=" . escapeshellarg($filePath);
+            $command .= " --url=" . escapeshellarg($url);
+            $command .= " --latitude=" . escapeshellarg($latitude);
+            $command .= " --longitude=" . escapeshellarg($longitude);
+            $command .= " 2>&1";
+    
+            // Ejecutar el script de Python
+            exec($command, $output, $returnVar);
     
             if ($returnVar === 0) {
                 // Éxito
+                $messge = implode(PHP_EOL, $output);
+                Log::error("Ejecutado el script de Python. Código de retorno: $messge");
                 return implode(PHP_EOL, $output);
             } else {
                 // Error
@@ -32,5 +42,6 @@ class ExcelController extends Controller
             return "Excepción: " . $e->getMessage();
         }
     }
+    
     
 }
