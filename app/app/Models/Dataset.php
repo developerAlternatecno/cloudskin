@@ -56,13 +56,14 @@ class Dataset extends Model
 
             $file = $request->file('provider_doc') ?? null;
             if ($file){
-                $filePath = $file->store('/public/datasets/'.$dataset_id);
+                $filePath = $file->store('public/datasets/'.$dataset_id);
                 $fileUrl = Storage::url($filePath);
             }
 
             $fileData = $request->file('static_data_upload') ?? null;
             if ($fileData){
-                $fileDataPath = $fileData->store('/public/datasets/'.$dataset_id."/dataFile");
+                $fileDataPath = $fileData->store('public/datasets/'.$dataset_id."/dataFile");
+                dd(Storage::url($fileDataPath));
                 $fileDataUrl = Storage::url($fileDataPath);
             }
 
