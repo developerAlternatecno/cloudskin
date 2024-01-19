@@ -53,7 +53,7 @@ class DatasetCrudController extends CrudController
         CRUD::column('type');
         CRUD::column('updated_at');
 
-        $this->crud->addClause('whereDoesntHave', 'purchases');
+        //$this->crud->addClause('whereDoesntHave', 'purchases');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
