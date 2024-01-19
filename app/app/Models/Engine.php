@@ -50,7 +50,7 @@ class Engine extends Model
             $template = [];
             foreach(json_decode($engine_template ) as $template_value){
 
-                $length = $template_value->length; // longitud predeterminada
+                $length = null; // longitud predeterminada
                 // Personalizar la longitud según el nombre
                 if ($template_value->field_name === 'Timestamp') {
                     $length = 19;
