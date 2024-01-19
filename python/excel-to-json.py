@@ -11,7 +11,11 @@ from typing import Optional
 def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude: Optional[float]=None):
     print('Entro a upload_data')
 
-    print("Contenido de la carpeta 'storage':", os.listdir("app/storage/app/public/datasets/"))
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # Obtener el directorio superior
+    parent_dir = os.path.dirname(script_dir)
+
+    print("Directorio superior al script:", parent_dir)
 
     if excel_file_path:
         excel_file_path = os.path.join("CloudSkin/cloudskin/app/storage/app/", excel_file_path)
