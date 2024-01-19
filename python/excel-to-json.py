@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import requests
 import codecs
@@ -83,10 +84,6 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
 def replace_escape_chars(key):
     return codecs.decode(key.encode('latin-1'), 'unicode-escape')
 
-excel_file_path = "/var/www/html/storage/app/public/datasets/b2ba10a6-9566-4b65-bbc9-559d6c84a9d2/dataFile/vPAfSfYn5Xtd2WgnQcENlPLfpZX8Q0DKW9t5dCVN.xlsx"
-url = "https://cloudskin.alternatecno.es/api/datasets/50949499-58b3-43d3-8896-711b2fd52984"
-
-
 parser = argparse.ArgumentParser(
                     prog='ProgramName',
                     description='What the program does',
@@ -97,5 +94,11 @@ parser.add_argument('--url')
 parser.add_argument('--latitude')
 parser.add_argument('--longitude')
 args = parser.parse_args()
+
+# Obtén la ruta al directorio 'storage' en Laravel
+laravel_storage_path = os.path.join(os.path.dirname(__file__), 'storage', 'app', 'public')
+
+# Construye la ruta completa al archivo Excel dentro del directorio 'storage' de Laravel
+excel_file_path = os.path.join(laravel_storage_path, args.file)
 
 upload_data(args.file, args.url, args.latitude, args.longitude)
