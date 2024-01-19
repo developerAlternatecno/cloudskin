@@ -16,11 +16,11 @@ RUN apt-get update && \
         libffi-dev \
         musl-dev \
         build-essential \
-        default-mysql-client &&\
-        # python3 \
-        # python3-pip \
-        # python3-pandas \
-        # python3-requests && \
+        default-mysql-client \
+        python3 \
+        python3-pip \
+        python3-pandas \
+        python3-requests && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
