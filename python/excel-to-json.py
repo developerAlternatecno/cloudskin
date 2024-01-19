@@ -15,6 +15,7 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
 
     if excel_file_path:
         excel_file_path = os.path.join(script_dir,"app/storage/app/", excel_file_path)
+        excel_file_path = excel_file_path.replace("python/", "")
     
     # logging.basicConfig(level=logging.INFO)
     # logger = logging.getLogger(__name__)
