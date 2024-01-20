@@ -73,11 +73,10 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
             resultados[key].append(resultado)
 
             if url is not None:
-                response = requests.post(url, json=resultado)
+                response = requests.post(url, json=resultado, verify=False)
                 if response.status_code == 200:
                     print("Objeto enviado con éxito \n")
                 else:
-                    # logger.info(f"Error al enviar el objeto: {response.status_code}, {response.text}")
                     print(f"Error al enviar el objeto: {response.status_code}, {response.text} \n")
                 c += 1
                 elapsed_time = time.time() - start_time

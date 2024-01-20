@@ -89,7 +89,7 @@ class Dataset extends Model
 
 
             if($fileDataUrl !== null){
-                ExcelController::processExcel($fileDataPath,"http://cloudskin.alternatecno.es/api/datasets/".$dataset_id,$dataset->latitude,$dataset->longitude);
+                ExcelController::processExcel($fileDataPath,"https://cloudskin.alternatecno.es/api/datasets/".$dataset_id,$dataset->latitude,$dataset->longitude);
             }
 
             return true;
