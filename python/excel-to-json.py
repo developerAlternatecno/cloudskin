@@ -13,12 +13,16 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     # Obtener el directorio superior
-    parent_dir = os.path.dirname(script_dir)
+    parent_dir_script = os.path.dirname(script_dir)
+
+    parent_dir = os.path.dirname(parent_dir_script)
+
+
 
     print("Directorio superior al script:", parent_dir)
 
     if excel_file_path:
-        excel_file_path = os.path.join("CloudSkin/cloudskin/app/storage/app/", excel_file_path)
+        excel_file_path = os.path.join(parent_dir,"storage/app/public/datasets/", excel_file_path)
     
     # logging.basicConfig(level=logging.INFO)
     # logger = logging.getLogger(__name__)
