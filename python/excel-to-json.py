@@ -20,7 +20,10 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
     contents = os.listdir(laravel_directory)
     print("Contenido del directorio:", contents)
     print("#################")
-    print("Excel Path:", excel_file_path)
+    # Extraer la parte después de "public/datasets"
+    relative_path = os.path.relpath(excel_file_path, "public/datasets")
+    print("Excel Path después de 'public/datasets':", relative_path)
+    print("Excel Path:", relative_path)
     print("#################")
 
     
