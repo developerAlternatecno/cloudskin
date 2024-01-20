@@ -15,13 +15,13 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
     script_directory = os.path.dirname(os.path.abspath(__file__))
 
     # Construir la ruta completa al directorio deseado en Laravel
-    laravel_directory = os.path.abspath(os.path.join(script_directory, "../../storage/app/public/datasets"))
+    laravel_directory = os.path.abspath(os.path.join(script_directory, "../../storage/app/public/datasets",args.file))
     # Listar el contenido del directorio
     contents = os.listdir(laravel_directory)
     print("Contenido del directorio:", contents)
     print("#################")
     
-    excel_file_path = os.path.join("storage/app/public/datasets/", args.file)
+    excel_file_path = os.path.join(args.file)
 
     # print("Ruta construida:", excel_file_path)
     
