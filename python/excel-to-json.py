@@ -23,7 +23,7 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
     # Listar el contenido del directorio
     contents = os.listdir(laravel_directory)
     print("Contenido del directorio:", contents)
-    print("La ruta completa deberia ser:", contents,relative_path)
+    print("La ruta completa deberia ser:", laravel_directory,relative_path)
     print("#################")
     
     excel_file_path = os.path.join(args.file)
