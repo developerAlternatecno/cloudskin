@@ -89,7 +89,7 @@ class Dataset extends Model
 
 
             if($fileDataUrl !== null){
-                ExcelController::processExcel($fileDataPath,$dataset->engine_id,$dataset->latitude,$dataset->longitude);
+                ExcelController::processExcel($fileDataPath,$dataset_id,$dataset->latitude,$dataset->longitude);
             }
 
             return true;
