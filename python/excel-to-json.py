@@ -28,7 +28,8 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
     print("La ruta completa deberia ser:", complete_path)
     print("#################")
     
-    excel_file_path = os.path.join(args.file)
+    # excel_file_path = os.path.join(args.file)
+    excel_file_path = complete_path
 
     # print("Ruta construida:", excel_file_path)
     
