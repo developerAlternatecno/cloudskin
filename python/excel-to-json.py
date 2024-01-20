@@ -9,34 +9,22 @@ import argparse
 from typing import Optional
 
 def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude: Optional[float]=None):
-    print('Entro a upload_data')
+    print('##########')
+
+    print('Pintamos la url del dataset:', url)
+
+    print('##########')
 
     # Extraer la parte después de "public/datasets"
     relative_path = os.path.relpath(excel_file_path, "public/datasets")
-    print("Excel Path después de 'public/datasets':", relative_path)
-    print("#################")
 
     # Obtener la ruta del directorio actual del script
     script_directory = os.path.dirname(os.path.abspath(__file__))
     # Construir la ruta completa al directorio deseado en Laravel
     laravel_directory = os.path.abspath(os.path.join(script_directory, "../../storage/app/public/datasets/"))
-
     complete_path = os.path.join(laravel_directory, relative_path)
-    # Listar el contenido del directorio
-    contents = os.listdir(laravel_directory)
-    print("Contenido del directorio:", contents)
-    print("La ruta completa deberia ser:", complete_path)
-    print("#################")
-    
-    # excel_file_path = os.path.join(args.file)
     excel_file_path = complete_path
 
-    # print("Ruta construida:", excel_file_path)
-    
-    # logging.basicConfig(level=logging.INFO)
-    # logger = logging.getLogger(__name__)
-    # logger.info(f'Procesando archivo Excel: {excel_file_path}')
-    # Lee el archivo Excel y carga los datos en un DataFrame de pandas
     df = pd.read_excel(excel_file_path)
 
     # Transforma el DataFrame en un diccionario de Python
