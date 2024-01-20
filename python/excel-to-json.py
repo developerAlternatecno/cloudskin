@@ -11,9 +11,11 @@ from typing import Optional
 def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude: Optional[float]=None):
     print('Entro a upload_data')
 
-    script_directory  = os.path.abspath(__file__)
+    # Obtener la ruta del directorio actual del script
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+
     # Construir la ruta completa al directorio deseado en Laravel
-    laravel_directory = os.path.join(script_directory, "../../storage/app/public/datasets")
+    laravel_directory = os.path.abspath(os.path.join(script_directory, "../../storage/app/public/datasets"))
     # Listar el contenido del directorio
     contents = os.listdir(laravel_directory)
     print("Contenido del directorio:", contents)
