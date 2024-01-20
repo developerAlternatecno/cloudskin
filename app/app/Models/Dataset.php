@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\ProcessExcelJob;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -10,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-use App\Http\Controllers\ExcelController;
 class Dataset extends Model
 {
     use \Backpack\CRUD\app\Models\Traits\CrudTrait;
@@ -89,7 +89,8 @@ class Dataset extends Model
 
 
             if($fileDataUrl !== null){
-                ExcelController::processExcel($fileDataPath,"http://161.97.169.228:8096/api/datasets/".$dataset_id,$dataset->latitude,$dataset->longitude);
+                //ExcelController::processExcel($fileDataPath,"http://161.97.169.228:8096/api/datasets/".$dataset_id,$dataset->latitude,$dataset->longitude);
+                ProcessExcelJob::dispatch($fileDataPath, "http://161.97.169.228:8096/api/datasets/".$dataset_id, $dataset->latitude, $dataset->longitude);
             }
 
             return true;
