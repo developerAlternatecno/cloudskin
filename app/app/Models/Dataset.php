@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Jobs\ProcessExcelJob;
+// use App\Jobs\ProcessExcelJob;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -88,10 +88,10 @@ class Dataset extends Model
             $dataset->save();
 
 
-            if($fileDataUrl !== null){
-                //ExcelController::processExcel($fileDataPath,"http://161.97.169.228:8096/api/datasets/".$dataset_id,$dataset->latitude,$dataset->longitude);
-                ProcessExcelJob::dispatch($fileDataPath, "http://161.97.169.228:8096/api/datasets/".$dataset_id, $dataset->latitude, $dataset->longitude);
-            }
+            // if($fileDataUrl !== null){
+            //     //ExcelController::processExcel($fileDataPath,"http://161.97.169.228:8096/api/datasets/".$dataset_id,$dataset->latitude,$dataset->longitude);
+            //     ProcessExcelJob::dispatch($fileDataPath, "http://161.97.169.228:8096/api/datasets/".$dataset_id, $dataset->latitude, $dataset->longitude);
+            // }
 
             return true;
         }catch(\Exception $e){

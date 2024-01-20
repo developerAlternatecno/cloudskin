@@ -54,7 +54,7 @@ services:
     volumes:
       - ./app:/var/www/html
       - ./docker/php/limits.ini:/usr/local/etc/php/conf.d/limits.ini
-      - ./python:/var/www/html/public/python
+      # - ./python:/var/www/html/public/python
     networks:
       - cloudskin-network
 
