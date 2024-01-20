@@ -11,11 +11,12 @@ from typing import Optional
 def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude: Optional[float]=None):
     print('Entro a upload_data')
 
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.abspath(__file__)
+    print("Script is running from:", script_path)
     
-    excel_file_path = os.path.join(script_dir, "../../storage/app/public/datasets/", args.file)
+    excel_file_path = os.path.join("storage/app/public/datasets/", args.file)
 
-    print("Ruta construida:", excel_file_path)
+    # print("Ruta construida:", excel_file_path)
     
     # logging.basicConfig(level=logging.INFO)
     # logger = logging.getLogger(__name__)
