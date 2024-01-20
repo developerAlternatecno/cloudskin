@@ -22,7 +22,7 @@ def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude:
     print("Directorio superior al script:", parent_dir)
 
     if excel_file_path:
-        excel_file_path = os.path.join(parent_dir,"storage/app/public/datasets/", excel_file_path)
+        excel_file_path = os.path.join("../../storage/app/public/datasets/", excel_file_path)
     
     # logging.basicConfig(level=logging.INFO)
     # logger = logging.getLogger(__name__)
