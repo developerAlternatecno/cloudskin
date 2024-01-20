@@ -11,7 +11,6 @@ from typing import Optional
 def upload_data(excel_file_path, url, latitude: Optional[float]=None, longitude: Optional[float]=None):
     print('##########')
     print("Intentando conectar a la URL:", url)
-    response = requests.post(url, json=resultado)
     print('##########')
 
     # Extraer la parte después de "public/datasets"
