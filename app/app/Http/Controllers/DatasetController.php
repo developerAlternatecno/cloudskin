@@ -16,6 +16,8 @@ class DatasetController extends Controller
     public function createDatasetFromAPI(Request $request)
     {
         try{
+            Log::info("Entramos en el CreateDataRead");
+            Log::info($request);
             $dataset_id = Str::uuid()->toString();
             $dataset = new Dataset();
             $dataset->id = $dataset_id;
