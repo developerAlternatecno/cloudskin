@@ -67,14 +67,14 @@ class DatasetController extends Controller
             }
 
             # Buscamos la posición actual de 'ºC'
-            $positionOfCelsius = array_search('ºC', array_keys($sortedData));
+            $positionOfCelsius = array_search('ºC', $set1);
 
             # Verificamos si 'ºC' está en la posición deseada
             if ($positionOfCelsius !== 2) {
                 # Movemos 'ºC' a la posición deseada [2]
                 $sortedData = array_slice($sortedData, 0, $positionOfCelsius, true) +
-                            array_slice($sortedData, $positionOfCelsius + 1, null, true) +
-                            [$positionOfCelsius + 1 => $sortedData[$positionOfCelsius]];
+                [$set1[2] => $sortedData['ºC']] +
+                array_slice($sortedData, $positionOfCelsius + 1, null, true);
             }
 
             // $set2 = array_keys($request['data'], true);
