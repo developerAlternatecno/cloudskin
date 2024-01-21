@@ -66,7 +66,16 @@ class DatasetController extends Controller
                 $sortedData[$key] = $request['data'][$key] ?? null;
             }
 
-            Log::info("Set2 (sorted): " . print_r(array_keys($sortedData), true));
+            # Buscamos la posición actual de 'ºC'
+            $positionOfCelsius = array_search('ºC', array_keys($sortedData));
+
+            # Verificamos si 'ºC' está en la posición deseada
+            if ($positionOfCelsius !== 2) {
+                # Movemos 'ºC' a la posición deseada [2]
+                $sortedData = array_slice($sortedData, 0, $positionOfCelsius, true) +
+                            array_slice($sortedData, $positionOfCelsius + 1, null, true) +
+                            [$positionOfCelsius + 1 => $sortedData[$positionOfCelsius]];
+            }
 
             // $set2 = array_keys($request['data'], true);
             // asort($set2);
