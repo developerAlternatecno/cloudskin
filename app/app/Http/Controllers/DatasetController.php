@@ -58,7 +58,7 @@ class DatasetController extends Controller
             $set1 = array_keys(json_decode($engine_template, true));
             asort($set1);
 
-            Log::info("Set1: ".$set1);
+            Log::info("Set1: ".print_r($set1));
 
             $set2 = array_keys($request['data'], true);
             asort($set2);
