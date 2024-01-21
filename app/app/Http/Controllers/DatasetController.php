@@ -58,23 +58,6 @@ class DatasetController extends Controller
             $set2 = array_keys($request['data'], true);
             asort($set2);
 
-            # Buscamos la posición actual de 'ºC' y 'Timestamp'
-            $positionOfCelsius = array_search('ºC', $set2);
-
-            # Si no encontramos 'ºC', buscamos '°C'
-            if ($positionOfCelsius === false) {
-                $positionOfCelsius = array_search('°C', $set2);
-                Log::info("Debemos reemplazar '°C' por 'ºC'");
-                $set2[$positionOfCelsius] = 'ºC';
-            }
-
-            # Reemplazamos 'ºC' o '°C' con 'ºC' si se encuentra
-            // foreach ($sortedData as &$value) {
-            //     if ($value === '°C') {
-            //         $value = 'ºC';
-            //     }
-            // }
-
             if(array_values($set1) != array_values($set2)){
                 Log::info("Los Datos no son iguales");
                 Log::info(print_r(array_values($set1),true));
