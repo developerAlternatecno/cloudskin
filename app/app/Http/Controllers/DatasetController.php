@@ -65,7 +65,7 @@ class DatasetController extends Controller
             if ($positionOfCelsius === false) {
                 $positionOfCelsius = array_search('°C', $set2);
                 Log::info("Debemos reemplazar '°C' por 'ºC'");
-                $set2[3] = 'ºC';
+                $set[$positionOfCelsius] = 'ºC';
             }
 
             # Reemplazamos 'ºC' o '°C' con 'ºC' si se encuentra
