@@ -16,8 +16,6 @@ class DatasetController extends Controller
     public function createDatasetFromAPI(Request $request)
     {
         try{
-            Log::info("Entramos en el CreateDataRead");
-            Log::info($request);
             $dataset_id = Str::uuid()->toString();
             $dataset = new Dataset();
             $dataset->id = $dataset_id;
@@ -37,6 +35,8 @@ class DatasetController extends Controller
     public function addDataRead(Request $request, string $dataset_id)
     {
         try{
+            Log::info("Entramos en el CreateDataRead");
+            Log::info($request);
             # We check if the dataset exists
             $dataset = Dataset::where('id', $dataset_id)->first();
 
@@ -80,6 +80,8 @@ class DatasetController extends Controller
             $dataread->latitude = $request['latitude'] ?? null;
 
             $dataread->save();
+
+            Log::info('Dataread creado');
 
             return response("OK", 200);
         }catch (\Exception $e){
