@@ -34,53 +34,54 @@ class DatasetController extends Controller
 
     public function addDataRead(Request $request, string $dataset_id)
     {
-        try{
+        try {
             Log::info("Entramos en el CreateDataRead");
-            Log::info("El Dataset es ".$dataset_id);
+            Log::info("El Dataset es " . $dataset_id);
             # We check if the dataset exists
             $dataset = Dataset::where('id', $dataset_id)->first();
-
-            if (!$dataset){
+    
+            if (!$dataset) {
                 Log::error("El Dataset no existe");
                 return response(['error' => 'dataset_not_found', 'message' => 'The dataset does not exist'], 404);
             }
-
-            if ($dataset->is_geolocated){
+    
+            if ($dataset->is_geolocated) {
                 Log::error("El Dataset no esta geolocalizado");
-                if (!isset($request['longitude']) or !isset($request['latitude'])){
+                if (!isset($request['longitude']) or !isset($request['latitude'])) {
                     return response(['error' => 'invalid_data', 'message' => 'The dataset is geolocated, so you must provide longitude and latitude values.'], 400);
                 }
             }
-
-            # We check if the entyr json has the same keys that the json stored in the Engine
+    
+            # We check if the entry json has the same keys as the json stored in the Engine
             $engine_template = $dataset->engine->template;
-
+    
             # Obtenemos las claves ordenadas del template
             $set1 = array_keys(json_decode($engine_template, true));
             asort($set1);
-
+    
             # Creamos un nuevo array ordenado usando las claves ordenadas del template
-            $sortedData = [];
-            foreach ($set1 as $key) {
-                $sortedData[$key] = $request['data'][$key] ?? null;
-            }
-
+            $sortedData = array_intersect_key($request['data'], array_flip($set1));
+    
+            # Ordenamos las claves de acuerdo con el template
+            $set2 = array_keys($sortedData);
+            asort($set2);
+    
             # Buscamos la posición actual de 'ºC' y 'Timestamp'
-            $positionOfCelsius = array_search('ºC', $set1);
-            $positionOfTimestamp = array_search('Timestamp', $set1);
-
+            $positionOfCelsius = array_search('ºC', $set2);
+            $positionOfTimestamp = array_search('Timestamp', $set2);
+    
             # Movemos 'ºC' a la posición deseada [2] si no está en la posición correcta
             if ($positionOfCelsius !== 2) {
                 unset($sortedData['ºC']);
                 $sortedData = array_slice($sortedData, 0, 2, true) + ['ºC' => $request['data']['ºC']] + array_slice($sortedData, 2, null, true);
             }
-
+    
             # Movemos 'Timestamp' a la posición deseada [3] si no está en la posición correcta
             if ($positionOfTimestamp !== 3) {
                 unset($sortedData['Timestamp']);
                 $sortedData = array_slice($sortedData, 0, 3, true) + ['Timestamp' => $request['data']['Timestamp']] + array_slice($sortedData, 3, null, true);
             }
-
+    
             # Comparación estricta entre las claves ordenadas del template y las claves ordenadas del conjunto de datos
             if ($set1 !== array_keys($sortedData)) {
                 Log::error("Datos invalidos");
@@ -88,35 +89,36 @@ class DatasetController extends Controller
                 Log::error("Set2 (sorted): " . print_r(array_keys($sortedData), true));
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values do not match with the ones assigned when creating the dataset.'], 400);
             }
-
+    
             # We check if the data has the correct typing
             $correctTyping = Dataread::checkDataTyping($sortedData, $engine_template);
-
-            Log::error("Correct Typing: ".$correctTyping);
-
-            if (gettype($correctTyping) == "string"){
+    
+            Log::error("Correct Typing: " . $correctTyping);
+    
+            if (gettype($correctTyping) == "string") {
                 return response(['error' => 'invalid_data', 'message' => $correctTyping], 400);
             }
-
+    
             # We create the dataread
             $dataread = new Dataread();
             $dataread->dataset_id = $dataset_id;
-            $dataread->data = $dataread->serialize($request['data']);
+            $dataread->data = $dataread->serialize($sortedData);
             $dataread->longitude = $request['longitude'] ?? null;
             $dataread->latitude = $request['latitude'] ?? null;
-
-            Log::error("Dataread: ".$dataread);
-
+    
+            Log::error("Dataread: " . $dataread);
+    
             $dataread->save();
-
+    
             Log::info('Dataread creado');
-
+    
             return response("OK", 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
         }
     }
+    
 
     public function getDataReads(Request $request, string $dataset_id){
         try{
