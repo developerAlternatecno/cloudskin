@@ -69,20 +69,16 @@ class DatasetController extends Controller
             $positionOfCelsius = array_search('ºC', $set1);
             $positionOfTimestamp = array_search('Timestamp', $set1);
 
-            # Verificamos si 'ºC' está en la posición deseada
+            # Movemos 'ºC' a la posición deseada [2] si no está en la posición correcta
             if ($positionOfCelsius !== 2) {
-                # Movemos 'ºC' a la posición deseada [2]
-                $sortedData = array_slice($sortedData, 0, $positionOfCelsius, true) +
-                            [$set1[2] => $sortedData['ºC']] +
-                            array_slice($sortedData, $positionOfCelsius + 1, null, true);
+                unset($sortedData['ºC']);
+                $sortedData = array_slice($sortedData, 0, 2, true) + ['ºC' => $request['data']['ºC']] + array_slice($sortedData, 2, null, true);
             }
 
-            # Verificamos si 'Timestamp' está en la posición deseada
+            # Movemos 'Timestamp' a la posición deseada [3] si no está en la posición correcta
             if ($positionOfTimestamp !== 3) {
-                # Movemos 'Timestamp' a la posición deseada [3]
-                $sortedData = array_slice($sortedData, 0, $positionOfTimestamp, true) +
-                            [$set1[3] => $sortedData['Timestamp']] +
-                            array_slice($sortedData, $positionOfTimestamp + 1, null, true);
+                unset($sortedData['Timestamp']);
+                $sortedData = array_slice($sortedData, 0, 3, true) + ['Timestamp' => $request['data']['Timestamp']] + array_slice($sortedData, 3, null, true);
             }
 
             # Comparación estricta entre las claves ordenadas del template y las claves ordenadas del conjunto de datos
