@@ -62,31 +62,25 @@ class DatasetController extends Controller
             # Creamos un nuevo array ordenado usando las claves ordenadas del template
             $sortedData = array_intersect_key($request['data'], array_flip($set1));
 
+            # Aseguramos que 'ºC' esté presente en el conjunto de datos
+            if (isset($request['data']['ºC'])) {
+                $sortedData['ºC'] = $request['data']['ºC'];
+            }
+
+            # Aseguramos que 'Timestamp' esté presente en el conjunto de datos
+            if (isset($request['data']['Timestamp'])) {
+                $sortedData['Timestamp'] = $request['data']['Timestamp'];
+            }
+
             # Ordenamos las claves de acuerdo con el template
             $set2 = array_keys($sortedData);
             asort($set2);
 
-            # Buscamos la posición actual de 'ºC' y 'Timestamp'
-            $positionOfCelsius = array_search('ºC', $set2);
-            $positionOfTimestamp = array_search('Timestamp', $set2);
-
-            # Movemos 'ºC' a la posición deseada [2] si está presente en el conjunto de datos
-            if (isset($sortedData['ºC']) && $positionOfCelsius !== 2) {
-                unset($sortedData['ºC']);
-                $sortedData = array_slice($sortedData, 0, 2, true) + ['ºC' => $request['data']['ºC']] + array_slice($sortedData, 2, null, true);
-            }
-
-            # Movemos 'Timestamp' a la posición deseada [3] si está presente en el conjunto de datos
-            if (isset($sortedData['Timestamp']) && $positionOfTimestamp !== 3) {
-                unset($sortedData['Timestamp']);
-                $sortedData = array_slice($sortedData, 0, 3, true) + ['Timestamp' => $request['data']['Timestamp']] + array_slice($sortedData, 3, null, true);
-            }
-
             # Comparación estricta entre las claves ordenadas del template y las claves ordenadas del conjunto de datos
-            if ($set1 !== array_keys($sortedData)) {
+            if ($set1 !== $set2) {
                 Log::error("Datos invalidos");
                 Log::error("Set1: " . print_r($set1, true));
-                Log::error("Set2 (sorted): " . print_r(array_keys($sortedData), true));
+                Log::error("Set2 (sorted): " . print_r($set2, true));
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values do not match with the ones assigned when creating the dataset.'], 400);
             }
     
