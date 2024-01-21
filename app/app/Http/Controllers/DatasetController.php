@@ -55,10 +55,9 @@ class DatasetController extends Controller
             # We check if the entyr json has the same keys that the json stored in the Engine
             $engine_template = $dataset->engine->template;
 
+            # Obtenemos las claves ordenadas del template
             $set1 = array_keys(json_decode($engine_template, true));
             asort($set1);
-
-            Log::info("Set1: ".print_r($set1, true));
 
             # Creamos un nuevo array ordenado usando las claves ordenadas del template
             $sortedData = [];
@@ -66,28 +65,32 @@ class DatasetController extends Controller
                 $sortedData[$key] = $request['data'][$key] ?? null;
             }
 
-            # Buscamos la posición actual de 'ºC'
+            # Buscamos la posición actual de 'ºC' y 'Timestamp'
             $positionOfCelsius = array_search('ºC', $set1);
+            $positionOfTimestamp = array_search('Timestamp', $set1);
 
             # Verificamos si 'ºC' está en la posición deseada
             if ($positionOfCelsius !== 2) {
                 # Movemos 'ºC' a la posición deseada [2]
                 $sortedData = array_slice($sortedData, 0, $positionOfCelsius, true) +
-                [$set1[2] => $sortedData['ºC']] +
-                array_slice($sortedData, $positionOfCelsius + 1, null, true);
+                            [$set1[2] => $sortedData['ºC']] +
+                            array_slice($sortedData, $positionOfCelsius + 1, null, true);
             }
 
-            // $set2 = array_keys($request['data'], true);
-            // asort($set2);
+            # Verificamos si 'Timestamp' está en la posición deseada
+            if ($positionOfTimestamp !== 3) {
+                # Movemos 'Timestamp' a la posición deseada [3]
+                $sortedData = array_slice($sortedData, 0, $positionOfTimestamp, true) +
+                            [$set1[3] => $sortedData['Timestamp']] +
+                            array_slice($sortedData, $positionOfTimestamp + 1, null, true);
+            }
 
-            // Log::info("Set2: ".print_r($set2, true));
-
-            # if(array_values($set1) != array_values($sortedData)){
+            # Comparación estricta entre las claves ordenadas del template y las claves ordenadas del conjunto de datos
             if ($set1 !== array_keys($sortedData)) {
                 Log::error("Datos invalidos");
                 Log::error("Set1: " . print_r($set1, true));
                 Log::error("Set2 (sorted): " . print_r(array_keys($sortedData), true));
-                return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset.'], 400);
+                return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values do not match with the ones assigned when creating the dataset.'], 400);
             }
 
             # We check if the data has the correct typing
