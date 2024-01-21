@@ -62,8 +62,9 @@ class DatasetController extends Controller
 
             $set2 = array_keys($request['data'], true);
             asort($set2);
-            var_dump(implode(",", $set1));
-            var_dump(implode(",", $set2));
+
+            Log::info("Set2: ".print_r($set2, true));
+
             if(array_values($set1) != array_values($set2)){
                 Log::error("Datos invalidos");
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset.'], 400);
