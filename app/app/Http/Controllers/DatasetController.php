@@ -68,9 +68,9 @@ class DatasetController extends Controller
             }
     
             # Reemplazamos 'ºC' o '°C' con 'ºC' si se encuentra
-            foreach ($data as &$value) {
-                if ($value === '°C') {
-                    $value = 'ºC';
+            foreach ($set2 as $key => $value) {
+                if ($data[$value] === '°C') {
+                    $data[$value] = 'ºC';
                 }
             }
     
@@ -105,6 +105,7 @@ class DatasetController extends Controller
             return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
         }
     }
+    
     
 
     public function getDataReads(Request $request, string $dataset_id){
