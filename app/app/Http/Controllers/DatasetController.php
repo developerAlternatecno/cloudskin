@@ -34,78 +34,78 @@ class DatasetController extends Controller
 
     public function addDataRead(Request $request, string $dataset_id)
     {
-        try{
+        try {
             Log::info("Entramos en el CreateDataRead");
             # We check if the dataset exists
             $dataset = Dataset::where('id', $dataset_id)->first();
-
-            if (!$dataset){
+    
+            if (!$dataset) {
                 return response(['error' => 'dataset_not_found', 'message' => 'The dataset does not exist'], 404);
             }
-
-            if ($dataset->is_geolocated){
-                if (!isset($request['longitude']) or !isset($request['latitude'])){
+    
+            if ($dataset->is_geolocated) {
+                if (!isset($request['longitude']) or !isset($request['latitude'])) {
                     return response(['error' => 'invalid_data', 'message' => 'The dataset is geolocated, so you must provide longitude and latitude values.'], 400);
                 }
             }
-
-            # We check if the entyr json has the same keys that the json stored in the Engine
+    
+            # We check if the entry json has the same keys that the json stored in the Engine
             $engine_template = $dataset->engine->template;
-
+    
             $set1 = array_keys(json_decode($engine_template, true));
             asort($set1);
-
-            $set2 = array_keys($request['data'], true);
+    
+            $data = $request['data']; // Convertimos a un array normal
+            $set2 = array_keys($data, true);
             asort($set2);
-
+    
             # Buscamos la posición actual de 'ºC' y 'Timestamp'
             $positionOfCelsius = array_search('ºC', $set2);
-
+    
             # Si no encontramos 'ºC', buscamos '°C'
             if ($positionOfCelsius === false) {
                 $positionOfCelsius = array_search('°C', $set2);
             }
-
+    
             # Reemplazamos 'ºC' o '°C' con 'ºC' si se encuentra
-
-             # Reemplazamos 'ºC' o '°C' con 'ºC' si se encuentra
-            foreach ($request['data'] as &$value) {
+            foreach ($data as &$value) {
                 if ($value === '°C') {
                     $value = 'ºC';
                 }
             }
-
-            if(array_values($set1) != array_values($set2)){
+    
+            if (array_values($set1) != array_values($set2)) {
                 Log::info("Los Datos no son iguales");
-                Log::info(print_r(array_values($set1),true));
-                Log::info(print_r(array_values($set2),true));
-                return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset.'], 400);
+                Log::info(print_r(array_values($set1), true));
+                Log::info(print_r(array_values($set2), true));
+                return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values do not fit with the ones assigned when creating the dataset.'], 400);
             }
-
+    
             # We check if the data has the correct typing
-            $correctTyping = Dataread::checkDataTyping($request['data'], $engine_template);
-
-            if (gettype($correctTyping) == "string"){
+            $correctTyping = Dataread::checkDataTyping($data, $engine_template);
+    
+            if (gettype($correctTyping) == "string") {
                 return response(['error' => 'invalid_data', 'message' => $correctTyping], 400);
             }
-
+    
             # We create the dataread
             $dataread = new Dataread();
             $dataread->dataset_id = $dataset_id;
-            $dataread->data = $dataread->serialize($request['data']);
+            $dataread->data = $dataread->serialize($data);
             $dataread->longitude = $request['longitude'] ?? null;
             $dataread->latitude = $request['latitude'] ?? null;
-
+    
             $dataread->save();
-
+    
             Log::info('Dataread creado');
-
+    
             return response("OK", 200);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
         }
     }
+    
 
     public function getDataReads(Request $request, string $dataset_id){
         try{
