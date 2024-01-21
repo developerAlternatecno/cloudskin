@@ -36,15 +36,17 @@ class DatasetController extends Controller
     {
         try{
             Log::info("Entramos en el CreateDataRead");
-            Log::info($request);
+            Log::info("El Dataset es ".$dataset_id);
             # We check if the dataset exists
             $dataset = Dataset::where('id', $dataset_id)->first();
 
             if (!$dataset){
+                Log::error("El Dataset no existe");
                 return response(['error' => 'dataset_not_found', 'message' => 'The dataset does not exist'], 404);
             }
 
             if ($dataset->is_geolocated){
+                Log::error("El Dataset no esta geolocalizado");
                 if (!isset($request['longitude']) or !isset($request['latitude'])){
                     return response(['error' => 'invalid_data', 'message' => 'The dataset is geolocated, so you must provide longitude and latitude values.'], 400);
                 }
@@ -61,12 +63,14 @@ class DatasetController extends Controller
             var_dump(implode(",", $set1));
             var_dump(implode(",", $set2));
             if(array_values($set1) != array_values($set2)){
-//                return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset. Array1 keys: '.$set1.'; array2 keys: '.$set2], 400);
+                Log::error("Datos invalidos");
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset.'], 400);
             }
 
             # We check if the data has the correct typing
             $correctTyping = Dataread::checkDataTyping($request['data'], $engine_template);
+
+            Log::error("Correct Typing: ".$correctTyping);
 
             if (gettype($correctTyping) == "string"){
                 return response(['error' => 'invalid_data', 'message' => $correctTyping], 400);
@@ -78,6 +82,8 @@ class DatasetController extends Controller
             $dataread->data = $dataread->serialize($request['data']);
             $dataread->longitude = $request['longitude'] ?? null;
             $dataread->latitude = $request['latitude'] ?? null;
+
+            Log::error("Dataread: ".$dataread);
 
             $dataread->save();
 
