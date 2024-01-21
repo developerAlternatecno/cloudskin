@@ -60,6 +60,8 @@ class DatasetController extends Controller
 
             if(array_values($set1) != array_values($set2)){
                 Log::info("Los Datos no son iguales");
+                Log::info(print_r(array_values($set1,true)));
+                Log::info(print_r(array_values($set2,true)));
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset.'], 400);
             }
 
