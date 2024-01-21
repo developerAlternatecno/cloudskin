@@ -56,8 +56,10 @@ class DatasetController extends Controller
 
             $set2 = array_keys($request['data'], true);
             asort($set2);
-
+            var_dump(implode(",", $set1));
+            var_dump(implode(",", $set2));
             if(array_values($set1) != array_values($set2)){
+//                return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset. Array1 keys: '.$set1.'; array2 keys: '.$set2], 400);
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset.'], 400);
             }
 
