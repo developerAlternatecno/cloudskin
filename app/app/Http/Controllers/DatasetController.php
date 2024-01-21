@@ -60,18 +60,26 @@ class DatasetController extends Controller
 
             Log::info("Set1: ".print_r($set1, true));
 
-            $set2 = array_keys($request['data'], true);
-            asort($set2);
+            # Creamos un nuevo array ordenado usando las claves ordenadas del template
+            $sortedData = [];
+            foreach ($set1 as $key) {
+                $sortedData[$key] = $request['data'][$key] ?? null;
+            }
 
-            Log::info("Set2: ".print_r($set2, true));
+            Log::info("Set2 (sorted): " . print_r(array_keys($sortedData), true));
 
-            if(array_values($set1) != array_values($set2)){
+            // $set2 = array_keys($request['data'], true);
+            // asort($set2);
+
+            // Log::info("Set2: ".print_r($set2, true));
+
+            if(array_values($set1) != array_values($sortedData)){
                 Log::error("Datos invalidos");
                 return response(['error' => 'invalid_data', 'message' => 'Invalid data values, json key values does not fit with the ones assigned when creating the dataset.'], 400);
             }
 
             # We check if the data has the correct typing
-            $correctTyping = Dataread::checkDataTyping($request['data'], $engine_template);
+            $correctTyping = Dataread::checkDataTyping($sortedData, $engine_template);
 
             Log::error("Correct Typing: ".$correctTyping);
 
