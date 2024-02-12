@@ -9,3 +9,6 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('sale') }}'><i class='nav-icon la la-question'></i> Sales</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('purchase') }}'><i class='nav-icon la la-question'></i> Purchases</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('api-tutorial') }}'><i class='nav-icon la la-question'></i> Tutorial</a></li>
+@if(auth()->user()->role_id == 3)
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('dictionary') }}'><i class='nav-icon la la-book'></i> Dictionary</a></li>
+@endif
