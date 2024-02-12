@@ -37,7 +37,7 @@ class Purchase extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $appends = ['buyerName', 'datasetName'];
+    protected $appends = ['buyerName', 'datasetName','DatasetUrl'];
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -85,6 +85,13 @@ class Purchase extends Authenticatable
     public function getDatasetNameAttribute(): string
     {
         return $this->dataset->name;
+    }
+
+    public function getDatasetUrlAttribute(){
+        $dataset_id = $this->dataset_id;
+        $displayText = url("/api/datasets/".$dataset_id);
+
+        return "<span class=''>$displayText</span>";
     }
 
     /*

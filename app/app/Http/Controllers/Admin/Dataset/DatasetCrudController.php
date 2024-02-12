@@ -21,8 +21,8 @@ class DatasetCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-//    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-//    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    //    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use DatasetPurchaseOperation;
 
@@ -70,15 +70,16 @@ class DatasetCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        $this->crud->setSaveActions([
-            'name' => 'Guardar',
-            'visible' => function ($crud) {
-                return True;
-            },
-            'redirect' => function ($crud, $request, $itemId) {
-                return $crud->route;
-            },
-        ]
+        $this->crud->setSaveActions(
+            [
+                'name' => 'Guardar',
+                'visible' => function ($crud) {
+                    return True;
+                },
+                'redirect' => function ($crud, $request, $itemId) {
+                    return $crud->route;
+                },
+            ]
         );
 
         $this->crud->addField([
@@ -86,6 +87,40 @@ class DatasetCrudController extends CrudController
             'label' => 'Dataset name',
             'type' => 'text',
             'required' => true,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_owner',
+            'label' => 'Owner name',
+            'type' => 'text',
+            'required' => false,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_origin',
+            'label' => 'Origin',
+            'type' => 'text',
+            'required' => false,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_start_daterange',
+            'label' => 'Start Date Range',
+            'type' => 'date',
+            'required' => false,
+            'wrapperAttributes' => [
+                'class' => 'col-md-6',
+            ],
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_end_daterange',
+            'label' => 'End Date Range',
+            'type' => 'date',
+            'required' => false,
+            'wrapperAttributes' => [
+                'class' => 'col-md-6',
+            ],
         ]);
 
         $this->crud->addField([
@@ -109,6 +144,18 @@ class DatasetCrudController extends CrudController
             'label' => 'Dataset description',
             'type' => 'textarea',
             'required' => true,
+        ]);
+
+        $this->crud->addField([
+            'name' => 'dataset_image',
+            'label' => 'Image',
+            'type' => 'upload',
+            'upload' => true,
+            'crop' => true,
+            'disk' => 'public',
+            'prefix' => 'uploads/images/',
+            'upload_multiple' => false,
+            'allowed_file_types' => ['jpeg', 'jpg', 'png', 'gif'],
         ]);
 
         $this->crud->addField([
@@ -157,18 +204,26 @@ class DatasetCrudController extends CrudController
         ]);
 
         $this->crud->addField([
+            'name' => 'dataset_categorie',
+            'label' => 'Categorie',
+            'type' => 'select_from_array',
+            'required' => true,
+            'options' => Dataset::DATASET_CATEGORIES,
+        ]);
+
+        $this->crud->addField([
             'name' => 'provider_doc',
             'label' => 'Data use contract',
             'type' => 'upload',
             'upload' => true,
-            'hint'=> 'Upload a optional data use contract, if you do, you will have to validate manually that the buyer has signed the contract.',
+            'hint' => 'Upload a optional data use contract, if you do, you will have to validate manually that the buyer has signed the contract.',
         ]);
 
         $this->crud->addField([
             'name' => 'autovalidate_sales',
             'label' => 'Auto-validate sales',
             'type' => 'checkbox',
-            'hint'=> 'Automatically validates sales if this field is checked.',
+            'hint' => 'Automatically validates sales if this field is checked.',
         ]);
 
         $this->crud->addField([
@@ -222,7 +277,7 @@ class DatasetCrudController extends CrudController
             'label' => 'File Data',
             'type' => 'upload',
             'upload' => true,
-            'hint'=> 'Upload the data file.',
+            'hint' => 'Upload the data file.',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-12', // Ajusta la clase de ancho según tus necesidades
                 'style' => 'display:none;', // Oculta el campo por defecto
@@ -235,7 +290,7 @@ class DatasetCrudController extends CrudController
             'label' => 'URL Data',
             'type' => 'text',
             'upload' => true,
-            'hint'=> 'Insert the url data.',
+            'hint' => 'Insert the url data.',
             'wrapperAttributes' => [
                 'class' => 'form-group col-md-12', // Ajusta la clase de ancho según tus necesidades
                 'style' => 'display:none;', // Oculta el campo por defecto
@@ -245,7 +300,6 @@ class DatasetCrudController extends CrudController
                 'class' => 'form-control',
             ],
         ]);
-
     }
 
 
@@ -268,7 +322,6 @@ class DatasetCrudController extends CrudController
         }
         Alert::error("No se ha creado correctamente");
         return Redirect::to(backpack_url('/dataset'));
-
     }
 
     /**
@@ -299,6 +352,5 @@ class DatasetCrudController extends CrudController
                 'value' => Dataset::where('id', $this->crud->getCurrentEntry()->id)->first()->generateLastDataReadsTable(),
             ]
         ]);
-
     }
 }

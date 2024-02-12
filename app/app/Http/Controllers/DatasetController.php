@@ -174,4 +174,36 @@ class DatasetController extends Controller
             return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
         }
     }
+
+    public function getMapDatasets(){
+        try{
+            $datasets = Dataset::whereIn('id', function ($query) {
+                $query->selectRaw('MIN(id)')
+                    ->from('datasets')
+                    ->groupBy('latitude', 'longitude');
+            })
+            ->get();
+
+            Log::info($datasets);
+
+            $data = [];
+
+            foreach ($datasets as $dataset){
+                $data[] = [
+                    'id' => $dataset->id,
+                    'dataset_id' => $dataset->id,
+                    'latitude' => $dataset->latitude,
+                    'longitude' => $dataset->longitude,
+                    'created_at' => $dataset->created_at,
+                    'dataset_name' => $dataset->name,
+                ];
+            }
+
+            return response($data, 200);
+        }catch (\Exception $e){
+            Log::error($e->getMessage());
+            return response(['error' => 'internal_error', 'message' => 'Ha ocurrido un error interno.'], 500);
+        }
+    }
+
 }

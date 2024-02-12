@@ -28,20 +28,31 @@ class Dataset extends Model
     ];
 
     const DATASET_LICENSES = [
-        'Unrestricted public use license'=>'Unrestricted public use license',
-        'Public use license - include use restrictions'=>"Public use license - include use restrictions",
-        'Public use license with geographic restrictions'=>"Public use license with geographic restrictions",
-        'Proprietary license - include usage restrictions'=>"Proprietary license - include usage restrictions",
-        'Proprietary license - include geographic restrictions'=>"Proprietary license - include geographic restrictions"
-        
+        'Unrestricted public use license' => 'Unrestricted public use license',
+        'Public use license - include use restrictions' => "Public use license - include use restrictions",
+        'Public use license with geographic restrictions' => "Public use license with geographic restrictions",
+        'Proprietary license - include usage restrictions' => "Proprietary license - include usage restrictions",
+        'Proprietary license - include geographic restrictions' => "Proprietary license - include geographic restrictions"
+
+    ];
+
+    const DATASET_CATEGORIES = [
+        'Agricultural' => 'Agricultural',
+        'Environmental' => "Environmental",
+        'Presence' => "Presence",
+
     ];
 
     const DATASET_TYPES_DATA = [
         'Static Data' => 'Static Data',
-        'Real Time Data' => 'Real Time Data' 
+        'Real Time Data' => 'Real Time Data'
     ];
 
-    protected $appends = ['url', 'isPurchased'];
+    protected $appends = ['url', 'isPurchased', 'imagen'];
+
+    // protected $fillable = [
+    //     'imagen',
+    // ];
 
     protected $keyType = 'string';
     /*
@@ -50,19 +61,26 @@ class Dataset extends Model
     |--------------------------------------------------------------------------
     */
 
-    public static function createDataset(Request $request, $engine_id){
-        try{
+    public static function createDataset(Request $request, $engine_id)
+    {
+        try {
             $dataset_id = Str::uuid()->toString();
 
             $file = $request->file('provider_doc') ?? null;
-            if ($file){
-                $filePath = $file->store('public/datasets/'.$dataset_id);
+            if ($file) {
+                $filePath = $file->store('public/datasets/' . $dataset_id);
                 $fileUrl = Storage::url($filePath);
             }
 
+            $fileImagen = $request->file('dataset_image') ?? null;
+            if ($fileImagen) {
+                $fileImgPath = $fileImagen->store('public/datasets/' . $dataset_id);
+                $fileImgUrl = Storage::url($fileImgPath);
+            }
+
             $fileData = $request->file('static_data_upload') ?? null;
-            if ($fileData){
-                $fileDataPath = $fileData->store('public/datasets/'.$dataset_id."/dataFile");
+            if ($fileData) {
+                $fileDataPath = $fileData->store('public/datasets/' . $dataset_id . "/dataFile");
                 $fileDataUrl = Storage::url($fileDataPath);
             }
 
@@ -73,10 +91,16 @@ class Dataset extends Model
             $dataset->user_id = Auth::id();
 
             $dataset->name = $request['dataset_name'];
+            $dataset->owner = $request['dataset_owner'];
+            $dataset->origin = $request['dataset_origin'];
+            $dataset->start_daterange = $request['dataset_start_daterange'];
+            $dataset->end_daterange = $request['dataset_end_daterange'];
             $dataset->type = $request['dataset_type'];
             $dataset->price = $request['dataset_price'];
             $dataset->license = $request['dataset_license'];
+            $dataset->categorie = $request['dataset_categorie'];
             $dataset->description = $request['dataset_description'];
+            $dataset->imagen = $fileImgUrl ?? null;
             $dataset->is_geolocated = $request['dataset_checkbox'];
             $dataset->latitude = $request['latitude'];
             $dataset->longitude = $request['longitude'];
@@ -94,20 +118,20 @@ class Dataset extends Model
             // }
 
             return true;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             Log::error("Error while creating dataset");
             Log::error($e->getMessage());
             return false;
         }
-
     }
 
-    public function generateLastDataReadsTable(){
+    public function generateLastDataReadsTable()
+    {
 
         $datareads = $this->datareads()->latest()->take(5)->get();
 
         $data = [];
-        foreach ($datareads as $dataread){
+        foreach ($datareads as $dataread) {
             array_push($data, get_object_vars($dataread->deserialize($dataread->data)));
         }
 
@@ -183,15 +207,19 @@ class Dataset extends Model
     */
     public function getUrlAttribute(): string
     {
-        return url("/api/datasets/".$this->id);
+        return url("/api/datasets/" . $this->id);
     }
-    public function getIsPurchasedAttribute(){
+    public function getIsPurchasedAttribute()
+    {
         return $this->purchases()->where('user_id', Auth::id())->where('is_active', 1)->exists();
     }
+    // public function getImagenAttribute(): string
+    // {
+    //     return url("storage/datasets/{$this->id}/{$this->imagen}");
+    // }
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
 }
-

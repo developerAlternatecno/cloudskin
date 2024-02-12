@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 #Map
 Route::get('/map/datareads', [DatareadController::class, 'getMapDatareads']);
-
+Route::get('/map/datasets', [DatasetController::class, 'getMapDatasets']);
 # Engines
 Route::post('/engines', [EngineController::class, 'createEngine']);
 

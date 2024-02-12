@@ -77,6 +77,18 @@ trait ShowPurchaseOperation
         $this->data['crud'] = $this->crud;
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.preview').' '.$this->crud->entity_name;
 
+        $this->crud->addColumn([
+            'name' => 'dataset_name',
+            'label' => 'Dataset',
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'url',
+            'label' => 'URL',
+            'type' => 'model_function',
+            'function_name' => 'getDatasetUrlAttribute',
+        ]);
+
         // set columns from db
         if ($setFromDb) {
             $this->crud->setFromDb(false, true);

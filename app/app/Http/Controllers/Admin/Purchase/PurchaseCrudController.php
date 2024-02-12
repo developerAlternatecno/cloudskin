@@ -63,6 +63,13 @@ class PurchaseCrudController extends CrudController
             'name' => 'datasetName'
         ]);
 
+        $this->crud->addColumn([
+            'name' => 'url',
+            'label' => 'URL',
+            'type' => 'model_function',
+            'function_name' => 'getDatasetUrlAttribute',
+        ]);
+
         CRUD::column('type');
 
         /**
