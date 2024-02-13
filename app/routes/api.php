@@ -7,6 +7,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use PSpell\Dictionary;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,10 @@ Route::get('/map/datareads', [DatareadController::class, 'getMapDatareads']);
 Route::get('/map/datasets', [DatasetController::class, 'getMapDatasets']);
 # Engines
 Route::post('/engines', [EngineController::class, 'createEngine']);
+
+#Dictionary
+Route::get('dictionary/{dictionary_id}',[Dictionary::class.'getDictionary']);
+Route::post('dictionary/{dictionary_id}',[Dictionary::class.'addDictionary']);
 
 #Datasets
 Route::post('/datasets', [DatasetController::class, 'createDatasetFromAPI']);

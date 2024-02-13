@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Dataset;
 
 use App\Http\Controllers\Admin\Dataset\Operations\DatasetPurchaseOperation;
 use App\Models\Dataset;
+use App\Models\Dictionary;
 use App\Models\Engine;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -70,6 +71,12 @@ class DatasetCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+
+        $diccionario = Dictionary::all(['name', 'description', 'input_type']);
+        $diccionarioNames = $diccionario->pluck('name')->toArray();
+        $diccionarioData = $diccionario->keyBy('name');
+
+
         $this->crud->setSaveActions(
             [
                 'name' => 'Guardar',
@@ -229,12 +236,13 @@ class DatasetCrudController extends CrudController
         $this->crud->addField([
             'name' => 'engine_template',
             'label' => 'Format of generated data',
-            'type' => 'repeatable', // tipo de campo
+            'type' => 'repeatable',
             'fields' => [
                 [
                     'name' => 'field_name',
                     'label' => 'Field name',
-                    'type' => 'text',
+                    'type' => 'select_from_array',
+                    'options' => array_combine($diccionarioNames, $diccionarioNames),
                     'required' => true,
                     'allows_null' => false,
                     'wrapperAttributes' => [
@@ -244,10 +252,7 @@ class DatasetCrudController extends CrudController
                 [
                     'name' => 'type',
                     'label' => 'Type',
-                    'type' => 'select_from_array',
-                    'options' => array_keys(Engine::ENGINE_TYPING),
-                    'required' => true,
-                    'allows_null' => false,
+                    'type' => 'text',
                     'wrapperAttributes' => [
                         'class' => 'col-md-3',
                     ],
@@ -263,6 +268,53 @@ class DatasetCrudController extends CrudController
             ],
             'new_item_label' => 'Add data',
         ]);
+
+        // $this->crud->addField([
+        //     'name' => 'engine_template',
+        //     'label' => 'Format of generated data',
+        //     'type' => 'repeatable', // tipo de campo
+        //     'fields' => [
+        //         [
+        //             'name' => 'field_name',
+        //             'label' => 'Field name',
+        //             'type' => 'text',
+        //             'required' => true,
+        //             'allows_null' => false,
+        //             'wrapperAttributes' => [
+        //                 'class' => 'col-md-3',
+        //             ],
+        //         ],
+        //         [
+        //             'name' => 'type',
+        //             'label' => 'Type',
+        //             'type' => 'select_from_array',
+        //             'options' => array_keys(Engine::ENGINE_TYPING),
+        //             'required' => true,
+        //             'allows_null' => false,
+        //             'wrapperAttributes' => [
+        //                 'class' => 'col-md-3',
+        //             ],
+        //         ],
+        //         [
+        //             'name' => 'description',
+        //             'label' => 'Description',
+        //             'type' => 'textarea',
+        //             'wrapperAttributes' => [
+        //                 'class' => 'col-md-3',
+        //             ],
+        //         ],
+
+        //     ],
+        //     'new_item_label' => 'Add data',
+        // ]);
+
+        $this->crud->addField([
+            'name' => 'custom_hint',
+            'label' => 'Custom Hint',
+            'type' => 'custom_html',
+            'value' => '<p>If you need to create any additional data types, please contact the administrator at <a href="mailto:admin@alternatecno.es">admin@alternatecno.es</a></p>',
+        ]);
+
 
         $this->crud->addField([
             'name' => 'dataset_data_type',
@@ -300,6 +352,8 @@ class DatasetCrudController extends CrudController
                 'class' => 'form-control',
             ],
         ]);
+
+        $this->crud->set('diccionario', $diccionario);
     }
 
 
