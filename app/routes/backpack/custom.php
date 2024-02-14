@@ -26,5 +26,6 @@ Route::group([
     Route::crud('sale', 'Sales\SalesCrudController');
     Route::crud('api-tutorial', 'Dataset\ApiTutorialCrudController');
     Route::crud('dictionary', 'Dictionary\DictionaryCrudController');
+    Route::crud('project', 'Project\ProjectCrudController');
     //Route::crud('dictionary', 'Dataset\MyDatasetCrudController');
 }); // this should be the absolute last line of this file

@@ -5,6 +5,8 @@ use App\Http\Controllers\DatasetController;
 use App\Http\Controllers\EngineController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\Project;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use PSpell\Dictionary;
@@ -33,6 +35,10 @@ Route::post('/engines', [EngineController::class, 'createEngine']);
 #Dictionary
 Route::get('dictionary/{dictionary_id}',[Dictionary::class.'getDictionary']);
 Route::post('dictionary/{dictionary_id}',[Dictionary::class.'addDictionary']);
+
+#Project
+Route::get('project/{project_id}',[ProjectController::class.'getProject']);
+Route::post('project_id/{project_id}',[ProjectController::class.'addProject']);
 
 #Datasets
 Route::post('/datasets', [DatasetController::class, 'createDatasetFromAPI']);

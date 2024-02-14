@@ -74,6 +74,11 @@ class User extends Authenticatable
         return $this->hasMany(Sale::class);
     }
 
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

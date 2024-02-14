@@ -191,6 +191,11 @@ class Dataset extends Model
     {
         return $this->hasMany(Sale::class);
     }
+
+    public function projects()
+    {
+        return $this->belongsTo(Project::class);
+    }   
     /*
     |--------------------------------------------------------------------------
     | SCOPES
