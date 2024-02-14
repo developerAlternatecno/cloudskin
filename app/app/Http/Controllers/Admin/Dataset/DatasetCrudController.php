@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Prologue\Alerts\Facades\Alert;
+use Illuminate\Support\Facades\View;
 
 /**
  * Class DatasetCrudController
@@ -72,9 +73,8 @@ class DatasetCrudController extends CrudController
     protected function setupCreateOperation()
     {
 
-        $diccionario = Dictionary::all(['name', 'description', 'input_type']);
-        $diccionarioNames = $diccionario->pluck('name')->toArray();
-        $diccionarioData = $diccionario->keyBy('name');
+        $diccionario = Dictionary::all(['name', 'description', 'input_type','default_unit']);
+        $diccionarioData = $diccionario->keyBy('name')->toArray();
 
 
         $this->crud->setSaveActions(
@@ -241,20 +241,44 @@ class DatasetCrudController extends CrudController
                 [
                     'name' => 'field_name',
                     'label' => 'Field name',
-                    'type' => 'select_from_array',
-                    'options' => array_combine($diccionarioNames, $diccionarioNames),
-                    'required' => true,
+                    'type' => 'text',
                     'allows_null' => false,
                     'wrapperAttributes' => [
-                        'class' => 'col-md-3',
+                        'class' => 'form-group col-md-2',
+                    ],
+                ],
+                [
+                    'name' => 'data_type',
+                    'label' => 'Data type',
+                    'type' => 'select_from_array',
+                    'options' => array_merge(['' => 'Select Field'], array_keys($diccionarioData)),
+                    'allows_null' => false,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
                     ],
                 ],
                 [
                     'name' => 'type',
                     'label' => 'Type',
                     'type' => 'text',
+                    'allows_null' => false,
                     'wrapperAttributes' => [
-                        'class' => 'col-md-3',
+                        'class' => 'form-group col-md-2',
+                    ],
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ],
+                ],
+                [
+                    'name' => 'unit',
+                    'label' => 'Unit',
+                    'type' => 'text',
+                    'allows_null' => false,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-md-2',
+                    ],
+                    'attributes' => [
+                        'readonly' => 'readonly',
                     ],
                 ],
                 [
@@ -262,11 +286,12 @@ class DatasetCrudController extends CrudController
                     'label' => 'Description',
                     'type' => 'textarea',
                     'wrapperAttributes' => [
-                        'class' => 'col-md-3',
+                        'class' => 'form-group col-md-4',
                     ],
                 ],
             ],
             'new_item_label' => 'Add data',
+
         ]);
 
         // $this->crud->addField([
@@ -352,8 +377,8 @@ class DatasetCrudController extends CrudController
                 'class' => 'form-control',
             ],
         ]);
-
-        $this->crud->set('diccionario', $diccionario);
+        //view()->share('diccionario', $diccionario->toJson());
+        view()->share('diccionarioData', $diccionario);
     }
 
 

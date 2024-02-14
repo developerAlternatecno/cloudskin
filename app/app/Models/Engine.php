@@ -45,10 +45,11 @@ class Engine extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public static function createEngineFromCrudController($engine_template){
-        try{
+    public static function createEngineFromCrudController($engine_template)
+    {
+        try {
             $template = [];
-            foreach(json_decode($engine_template ) as $template_value){
+            foreach (json_decode($engine_template) as $template_value) {
 
                 $length = ''; // longitud predeterminada
                 $unit = '';
@@ -60,12 +61,11 @@ class Engine extends Model
                 }
 
                 $template[$template_value->field_name] = [
-                    'type' => array_keys(Engine::ENGINE_TYPING)[$template_value->type],
+                    'type' => Engine::ENGINE_TYPING[$template_value->type]['type'],
                     'description' => $template_value->description ? $template_value->description : null,
                     'length'    => $length,
                     'unit'    => $unit,
                 ];
-                
             }
 
             $engine_id = Str::uuid()->toString();
@@ -75,13 +75,11 @@ class Engine extends Model
 
             $engine->save();
             return $engine_id;
-
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             Log::error("Error while creating engine");
             Log::error($e->getMessage());
             return null;
         }
-
     }
     /*
     |--------------------------------------------------------------------------
