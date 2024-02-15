@@ -38,7 +38,7 @@ Route::post('dictionary/{dictionary_id}',[Dictionary::class.'addDictionary']);
 
 #Project
 Route::get('project/{project_id}',[ProjectController::class.'getProject']);
-Route::post('project_id/{project_id}',[ProjectController::class.'addProject']);
+Route::post('project/{project_id}',[ProjectController::class.'addProject']);
 
 #Datasets
 Route::post('/datasets', [DatasetController::class, 'createDatasetFromAPI']);

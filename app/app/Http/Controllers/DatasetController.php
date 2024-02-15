@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dataread;
 use App\Models\Dataset;
+use App\Models\Project;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -21,6 +22,9 @@ class DatasetController extends Controller
             $dataset->id = $dataset_id;
             $dataset->user_id = $request->user_id;
             $dataset->engine_id = $request->engine_id;
+
+            $project = Project::find($request->input('project_id'));
+            $project->datasets()->attach($dataset);
 
             $dataset->save();
 

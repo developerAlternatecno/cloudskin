@@ -14,7 +14,7 @@ class Project extends Model
     use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     use HasFactory;
 
-        /*
+    /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
@@ -26,7 +26,15 @@ class Project extends Model
         "commercial project" => "Commercial Project"
     ];
 
+    const PROJECT_ACCESS = [
+        "private" => "Private",
+        "public" => "Public"
+    ];
+
     protected $appends = [];
+    protected $fillable = [
+        'name', 'type', 'description', 'entity', 'url', 'access', 'user_id', 'dataset_id'
+    ];
     protected $keyType = 'string';
 
     /*
@@ -40,15 +48,15 @@ class Project extends Model
             $project_id = Str::uuid()->toString();
 
             $project = new Project();
-            $project->id = $project_id;
-            $project->name = $request['name'];
-            $project->type = $request['type'];
-            $project->description = $request['description'];
-            $project->entity = $request['entity'];
-            $project->url = $request['url'];
-            $project->access = $request['access'];
-            $project->data_source = $request['data_source'];
-            $project->dataset = $request['dataset'];
+
+            $project->name = $request['project_name'];
+            $project->type = $request['project_type'];
+            $project->description = $request['project_description'];
+            $project->entity = $request['project_entity'];
+            $project->url = $request['project_url'];
+            $project->access = $request['project_access'];
+            $project->data_source = $request['project_data_source'];
+            $project->dataset_id = $request['dataset_id'];
             $project->user_id = Auth::id();
 
             $project->save();
@@ -58,6 +66,16 @@ class Project extends Model
             Log::error($e);
             return false;
         }
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Manejar la eliminación del proyecto antes de eliminar los datasets
+        static::deleting(function ($project) {
+            $project->datasets()->delete();
+        });
     }
 
     /*
@@ -72,7 +90,12 @@ class Project extends Model
 
     public function datasets()
     {
-        return $this->hasOne(Dataset::class);
+        return $this->belongsToMany(Dataset::class, 'project_dataset');
+    }
+
+    public function dataset()
+    {
+        return $this->belongsTo(Dataset::class);
     }
 
 
