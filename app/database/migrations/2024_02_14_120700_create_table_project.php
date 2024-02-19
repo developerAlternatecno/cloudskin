@@ -30,7 +30,7 @@ class CreateTableProject  extends Migration
         });
 
         Schema::table('datasets', function (Blueprint $table) {
-            $table->foreignId('project_id')->nullable()->constrained();
+            $table->foreignId('project_id')->nullable()->constrained()->after('data_url');
         });
     }
 

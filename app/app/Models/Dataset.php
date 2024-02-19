@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\Project;
+use Illuminate\Support\Facades\Session;
 
 class Dataset extends Model
 {
@@ -66,6 +68,10 @@ class Dataset extends Model
         try {
             $dataset_id = Str::uuid()->toString();
 
+            dd($request->input('projectId'));
+
+            //$projectId = isset($request->input('projectId')) ? $request->input('projectId') : null;
+
             $file = $request->file('provider_doc') ?? null;
             if ($file) {
                 $filePath = $file->store('public/datasets/' . $dataset_id);
@@ -109,13 +115,11 @@ class Dataset extends Model
             $dataset->data_type = $request['dataset_data_type'];
             $dataset->data_url = isset($fileDataUrl) ? $fileDataUrl : $request['realtime_data_upload'];
 
+            if ($projectId) {
+                $dataset->project_id = $projectId;
+            }
+
             $dataset->save();
-
-
-            // if($fileDataUrl !== null){
-            //     //ExcelController::processExcel($fileDataPath,"http://161.97.169.228:8096/api/datasets/".$dataset_id,$dataset->latitude,$dataset->longitude);
-            //     ProcessExcelJob::dispatch($fileDataPath, "http://161.97.169.228:8096/api/datasets/".$dataset_id, $dataset->latitude, $dataset->longitude);
-            // }
 
             return true;
         } catch (\Exception $e) {

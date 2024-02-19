@@ -17,3 +17,6 @@ use App\Http\Controllers\CustomRegisterController;
 Route::get('/', function () {
     return redirect('/admin/login');
 });
+
+Route::get('/dataset/create/{projectId}', 
+    [App\Http\Controllers\DatasetController::class, 'create'])->name('DatasetController@create')->name('dataset.create');

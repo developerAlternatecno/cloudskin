@@ -102,19 +102,23 @@ class ProjectCrudController extends CrudController
             'options' => Project::PROJECT_ACCESS,
         ]);
 
-        $this->crud->addField([
-            'name' => 'project_data_source',
-            'label' => 'Data Source',
-            'type' => 'text',
-            'required' => true,
-
-        ]);
+        //SERAN LOS PROJETOS QUE TENGAN DATASET ASOCIADO
+        // $this->crud->addField([
+        //     'name' => 'dataset_id',
+        //     'label' => 'Dataset Associated',
+        //     'type' => 'select2_from_array',
+        //     'options' => $this->getSelectOptions(),
+        //     'allows_null' => true,
+        // ]);
 
         $this->crud->addField([
             'name' => 'dataset_id',
-            'label' => 'Dataset Associated',
-            'type' => 'select2_from_array',
-            'options' => $this->getSelectOptions(),
+            'label' => 'Datasets Associated',
+            'type' => 'select2_multiple',
+            'entity' => 'datasets', // Nombre de la entidad asociada
+            'attribute' => 'name', // Atributo a mostrar en el campo select2
+            'model' => 'App\Models\Dataset', // Modelo de la entidad asociada
+            'pivot' => true, // Especifica si se trata de una tabla intermedia (en caso de relación muchos a muchos)
             'allows_null' => true,
         ]);
 
@@ -131,8 +135,10 @@ class ProjectCrudController extends CrudController
 
         $isProjectCreated = Project::createProject($request);
         if ($isProjectCreated) {
+            $projectId = Project::where('name', $request->input('project_name'))->first()->id;
             Alert::success("Se ha creado correctamente");
-            return Redirect::to(backpack_url('/project'));
+            return Redirect::to(backpack_url('/dataset/create') . "?projectId=" . $projectId);
+            //return Redirect::to(backpack_url('/project'));
         }
         Alert::error("No se ha creado correctamente");
         return Redirect::to(backpack_url('/project'));
