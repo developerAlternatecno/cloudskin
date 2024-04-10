@@ -1,0 +1,1 @@
+<a href="{{backpack_url('purchase/'.$entry->id."/deny_purchase")}}" class="btn btn-sm btn-link"><i class="las la-times"></i>Deny</a>

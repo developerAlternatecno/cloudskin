@@ -1,0 +1,1 @@
+<a href="{{backpack_url('sale/'.$entry->id."/deny_sale")}}" class="btn btn-sm btn-link"><i class="las la-times"></i>Deny</a>
