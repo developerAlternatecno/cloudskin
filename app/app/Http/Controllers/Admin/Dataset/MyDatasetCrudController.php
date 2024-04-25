@@ -101,6 +101,7 @@ class MyDatasetCrudController extends CrudController
         CRUD::column('description');
         CRUD::column('url');
         CRUD::column('type');
+        CRUD::column('imagen');
 
 
         // Agregar la tabla a la configuración de la vista de detalle
