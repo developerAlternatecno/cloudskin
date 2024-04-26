@@ -74,10 +74,12 @@ class DatasetObserver
     {
         Log::info('Dataset start upload: ');
         if ($dataset->id && !empty($dataset->data_type) && $dataset->data_type == 'Static Data' && !empty($dataset->data_url)) {
-            Log::info('Dataset checkIfDatasetHasStaticDataAndDataUrl: ');
+            Log::info('Dataset checkIfDatasetHasStaticDataAndDataUrl');
             $fileExtensions = ['xlsx', 'xls', 'csv'];
             $urlPath = pathinfo($dataset->data_url, PATHINFO_EXTENSION);
+            Log::info('urlPath: ' . $urlPath);
             if (in_array($urlPath, $fileExtensions)) {
+                Log::info('Fichero OK');
                 return true;
             }
         }
