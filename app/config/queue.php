@@ -43,8 +43,7 @@ return [
 
         'beanstalkd' => [
             'driver' => 'beanstalkd',
-            // 'host' => 'localhost',
-            'host' => 'cloudskin.alternatecno.es',
+            'host' => 'localhost',
             'queue' => 'default',
             'retry_after' => 180,
             'block_for' => 0,
