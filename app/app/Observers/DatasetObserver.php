@@ -30,7 +30,7 @@ class DatasetObserver
     public function updated(Dataset $dataset)
     {
         $dataset->refresh();
-        Log::info('Dataset updated: ' . $dataset->id);
+        Log::info('Dataset updatedd: ' . $dataset->id);
         if ($this->checkIfDatasetHasStaticDataAndDataUrl($dataset)) {
             Log::info('Dataset has static data and data url');
             ProcessExcelJob::dispatch($dataset)->delay(Carbon::now()->addSeconds(10));
