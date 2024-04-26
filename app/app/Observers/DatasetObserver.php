@@ -72,7 +72,9 @@ class DatasetObserver
 
     private function checkIfDatasetHasStaticDataAndDataUrl(Dataset $dataset): bool
     {
+        Log::info('Dataset start upload: ');
         if ($dataset->id && !empty($dataset->data_type) && $dataset->data_type == 'Static Data' && !empty($dataset->data_url)) {
+            Log::info('Dataset checkIfDatasetHasStaticDataAndDataUrl: ');
             $fileExtensions = ['xlsx', 'xls', 'csv'];
             $urlPath = pathinfo($dataset->data_url, PATHINFO_EXTENSION);
             if (in_array($urlPath, $fileExtensions)) {
