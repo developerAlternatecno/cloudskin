@@ -266,6 +266,7 @@ class Dataset extends Model
 
     public function getImagenUrlAttribute(): ?string
     {
+        url("storage/datasets/" . $this->id);
         return $this->imagen ? url($this->imagen) : null;
     }
 
