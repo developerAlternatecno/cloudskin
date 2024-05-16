@@ -1,3 +1,5 @@
+Acknowledgements to CloudSkin: This code is part of the work carried out within the Project 101092646 — CloudSkin, signed by the European Health and Digital Executive Agency (HADEA)
+
 # Cloudskin - Backend
 
 Este proyecto utiliza Laravel Backpack como framework de administración, con MySQL como sistema de gestión de base de datos y Nginx como servidor web, todo dentro de contenedores Docker para facilitar el despliegue y la gestión del entorno de desarrollo.
