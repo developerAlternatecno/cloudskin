@@ -211,7 +211,7 @@ class DatasetCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'dataset_categorie',
-            'label' => 'Categorie',
+            'label' => 'Category',
             'type' => 'select_from_array',
             'required' => true,
             'options' => Dataset::DATASET_CATEGORIES,

@@ -106,7 +106,7 @@ class ProjectCrudController extends CrudController
         //SERAN LOS PROJETOS QUE TENGAN DATASET ASOCIADO
         // $this->crud->addField([
         //     'name' => 'dataset_id',
-        //     'label' => 'Dataset Associated',
+        //     'label' => 'Associated Datasets',
         //     'type' => 'select2_from_array',
         //     'options' => $this->getSelectOptions(),
         //     'allows_null' => true,
@@ -114,7 +114,7 @@ class ProjectCrudController extends CrudController
 
         $this->crud->addField([
             'name' => 'dataset_id',
-            'label' => 'Datasets Associated',
+            'label' => 'Associated Datasets',
             'type' => 'select2_multiple',
             'entity' => 'datasets', // Nombre de la entidad asociada
             'attribute' => 'name', // Atributo a mostrar en el campo select2
