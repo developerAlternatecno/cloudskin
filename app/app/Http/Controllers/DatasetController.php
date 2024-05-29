@@ -241,7 +241,8 @@ class DatasetController extends Controller
 
     public function showUploadForm($datasetId)
     {
-        $dataset = Dataset::findOrFail($datasetId);
+        // Intentar encontrar el dataset por su ID alfanumérico
+        $dataset = Dataset::where('id', $datasetId)->firstOrFail();
         return view('upload_data', ['dataset' => $dataset]);
     }
 
