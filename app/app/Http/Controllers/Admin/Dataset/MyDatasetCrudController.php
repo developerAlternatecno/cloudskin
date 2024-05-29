@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Log;
 class MyDatasetCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-//    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    //    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use MyDatasetShowOperation;
 
     /**
@@ -75,13 +75,11 @@ class MyDatasetCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-
     }
 
 
     public function store()
     {
-
     }
 
     /**
@@ -108,21 +106,21 @@ class MyDatasetCrudController extends CrudController
         $datasetData = Dataset::where('id', $this->crud->getCurrentEntry()->id)->first()->generateLastDataReadsTable();
         $datasetId = $this->crud->getCurrentEntry()->id;
 
-        
-        if($datasetData === "<p>No hay datos disponibles</p>"){
+
+        if ($datasetData === "<p>No data available</p>") {
             $this->crud->addColumns([
                 [
                     'name' => 'table_html',
-                    'label' => 'Últimos 5 registros',
+                    'label' => 'Last 5 records',
                     'type' => 'custom_html',
                     'value' => $datasetData . "<a href='" . route('dataset.upload_form', ['dataset' => $datasetId]) . "' class='btn btn-primary'>Upload data</a>",
                 ]
             ]);
-        }else{
+        } else {
             $this->crud->addColumns([
                 [
                     'name' => 'table_html',
-                    'label' => 'Últimos 5 registros',
+                    'label' => 'Last 5 records',
                     'type' => 'custom_html',
                     'value' => Dataset::where('id', $this->crud->getCurrentEntry()->id)->first()->generateLastDataReadsTable(),
                 ]

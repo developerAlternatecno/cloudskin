@@ -28,7 +28,7 @@
             <button type="submit" class="btn btn-primary">Upload</button>
         </form>
         <div class="container">
-            <p>El JSON a subir debe contener la siguiente estructura y nombres:</p>
+            <p>The JSON to be uploaded must contain the following structure and names:</p>
             <pre style="background: lightgrey; width: 950px;">
                 {
                     "data": [
@@ -37,9 +37,9 @@
                             "latitude": X.XXX,
                             "longitude": X.XXXX,
                             "data": {
-                                "Campo1": "XXX.XXXX",
-                                "Campo2": "XXXXX",
-                                "Campo3": "XXXX"
+                                "Field1": "XXX.XXXX",
+                                "Field2": "XXXXX",
+                                "Field3": "XXXX"
                             },
                         },
                         {
@@ -47,9 +47,9 @@
                             "latitude": X.XXX,
                             "longitude": X.XXXX,
                             "data": {
-                                "Campo1": "XXX.XXXX",
-                                "Campo2": "XXXXX",
-                                "Campo3": "XXXX"
+                                "Field1": "XXX.XXXX",
+                                "Field2": "XXXXX",
+                                "Field3": "XXXX"
                             },
                         },
                     ]
