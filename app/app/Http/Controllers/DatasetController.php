@@ -256,10 +256,10 @@ class DatasetController extends Controller
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             echo 'no tiene formato de JSON';
-            return redirect()->route('dataset.upload_form', ['dataset' => $datasetId])->with('error', 'El contenido debe ser un JSON válido.');
+            return redirect()->route('dataset.upload_form', ['dataset' => $datasetId])->with('error', 'The content must be a valid JSON.');
         }
 
-        $dataset = Dataset::findOrFail($datasetId);
+        $dataset = Dataset::where('id', $datasetId)->firstOrFail();
 
         foreach ($jsonData as $entries) {
             foreach ($entries as $entry) {
