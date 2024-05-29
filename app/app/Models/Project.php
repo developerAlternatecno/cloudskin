@@ -56,6 +56,7 @@ class Project extends Model
             $project->entity = $request['project_entity'];
             $project->url = $request['project_url'];
             $project->access = $request['project_access'];
+            $project->dataset_reference_id = $request['dataset_reference_id'];
     
             // Crear el proyecto
             $project->save();

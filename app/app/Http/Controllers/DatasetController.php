@@ -238,4 +238,42 @@ class DatasetController extends Controller
             Log::error($e->getMessage());
         }
     }
+
+    public function showUploadForm($datasetId)
+    {
+        $dataset = Dataset::findOrFail($datasetId);
+        return view('upload_data', ['dataset' => $dataset]);
+    }
+
+    public function upload(Request $request, $datasetId)
+    {
+        $request->validate([
+            'data' => 'required|string',
+        ]);
+
+        $data = $request->input('data');
+        $jsonData = json_decode($data, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            echo 'no tiene formato de JSON';
+            return redirect()->route('dataset.upload_form', ['dataset' => $datasetId])->with('error', 'El contenido debe ser un JSON válido.');
+        }
+
+        $dataset = Dataset::findOrFail($datasetId);
+
+        foreach ($jsonData as $entries) {
+            foreach ($entries as $entry) {
+
+                $dataread = new Dataread();
+                $dataread->dataset_id = $dataset->id;
+                $dataread->data = json_encode($entry['data'] ?? []);
+                $dataread->longitude = $entry['longitude'] ?? null;
+                $dataread->latitude = $entry['latitude'] ?? null;
+    
+                $dataread->save();
+            }
+        }
+
+        return redirect()->route('dataset.upload_form', ['dataset' => $datasetId])->with('success', 'Datos subidos exitosamente.');
+    }
 }

@@ -124,11 +124,26 @@ class ProjectCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'name' => 'custom_hint',
-            'label' => 'Custom Hint',
-            'type' => 'custom_html',
-            'value' => '<p>If you need to create a new dataset, click <a href="' . backpack_url('/dataset/create') . '">here</a>.</p>',
+            'name' => 'dataset_reference_id',
+            'label' => 'Output Dataset',
+            'type' => 'select',
+            'entity' => 'datasets', // Nombre de la entidad asociada
+            'attribute' => 'name', // Atributo a mostrar en el campo
+            'model' => 'App\Models\Dataset', // Modelo de la entidad asociada
+            'pivot' => false, // Especifica si se trata de una tabla intermedia (en caso de relación muchos a muchos)
+            'allows_null' => false,
+            'options' => (function ($query) {
+                return $query->where('user_id',  Auth::id())->get();
+            })
         ]);
+
+
+        // $this->crud->addField([
+        //     'name' => 'custom_hint',
+        //     'label' => 'Custom Hint',
+        //     'type' => 'custom_html',
+        //     'value' => '<p>If you need to create a new dataset, click <a href="' . backpack_url('/dataset/create') . '">here</a>.</p>',
+        // ]);
     }
 
     public function store(ProjectRequest $request)
