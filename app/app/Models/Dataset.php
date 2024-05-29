@@ -162,7 +162,7 @@ class Dataset extends Model
         }
 
         if ($data == []) {
-            return "<p>No hay datos disponibles</p>";
+            return "<p>No data available</p>";
         }
 
         // Obtener las columnas de la tabla a partir de los datos
@@ -205,7 +205,7 @@ class Dataset extends Model
         }
     }
 
-    
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
