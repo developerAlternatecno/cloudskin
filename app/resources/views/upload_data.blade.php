@@ -40,7 +40,7 @@
                                 "Field1": "XXX.XXXX",
                                 "Field2": "XXXXX",
                                 "Field3": "XXXX"
-                            },
+                            }
                         },
                         {
                             "dataset_id": "X",
@@ -50,8 +50,8 @@
                                 "Field1": "XXX.XXXX",
                                 "Field2": "XXXXX",
                                 "Field3": "XXXX"
-                            },
-                        },
+                            }
+                        }
                     ]
                 }
             </pre>
