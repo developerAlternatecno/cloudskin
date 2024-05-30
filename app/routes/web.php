@@ -23,5 +23,6 @@ Route::get('/', function () {
 Route::get('/dataset/create/{projectId}', 
     [App\Http\Controllers\DatasetController::class, 'create'])->name('DatasetController@create')->name('dataset.create');
   
-Route::get('/upload/{dataset}', [App\Http\Controllers\DatasetController::class, 'showUploadForm'])->name('dataset.upload_form');
+Route::get('admin/upload/{dataset}', 
+    [App\Http\Controllers\DatasetController::class, 'showUploadForm'])->name('dataset.upload_form');
 Route::post('/upload/{dataset}', [App\Http\Controllers\DatasetController::class, 'upload'])->name('dataset.upload');
