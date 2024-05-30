@@ -107,24 +107,24 @@ class MyDatasetCrudController extends CrudController
         $datasetId = $this->crud->getCurrentEntry()->id;
 
 
-        if ($datasetData === "<p>No data available</p>") {
-            $this->crud->addColumns([
-                [
-                    'name' => 'table_html',
-                    'label' => 'Last 5 records',
-                    'type' => 'custom_html',
-                    'value' => $datasetData . "<a href='" . route('dataset.upload_form', ['dataset' => $datasetId]) . "' class='btn btn-primary'>Upload data</a>",
-                ]
-            ]);
-        } else {
-            $this->crud->addColumns([
-                [
-                    'name' => 'table_html',
-                    'label' => 'Last 5 records',
-                    'type' => 'custom_html',
-                    'value' => Dataset::where('id', $this->crud->getCurrentEntry()->id)->first()->generateLastDataReadsTable(),
-                ]
-            ]);
-        }
+        // if ($datasetData === "<p>No data available</p>") {
+        $this->crud->addColumns([
+            [
+                'name' => 'table_html',
+                'label' => 'Last 5 records',
+                'type' => 'custom_html',
+                'value' => $datasetData . "<a href='" . route('dataset.upload_form', ['dataset' => $datasetId]) . "' class='btn btn-primary'>Upload data</a>",
+            ]
+        ]);
+        // } else {
+        //     $this->crud->addColumns([
+        //         [
+        //             'name' => 'table_html',
+        //             'label' => 'Last 5 records',
+        //             'type' => 'custom_html',
+        //             'value' => Dataset::where('id', $this->crud->getCurrentEntry()->id)->first()->generateLastDataReadsTable(),
+        //         ]
+        //     ]);
+        // }
     }
 }
