@@ -1,4 +1,4 @@
-Acknowledgements to CloudSkin: This code is part of the work carried out within the Project 101092646 — CloudSkin, signed by the European Health and Digital Executive Agency (HADEA)
+**CLOUDSKIN** has received funding from the European Union’s Horizon research and innovation programme under grant agreement No 101092646
 
 # Cloudskin - Backend
 
