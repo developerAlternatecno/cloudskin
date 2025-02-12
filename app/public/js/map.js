@@ -4,7 +4,7 @@ function onMarkerClick(event, route){
 }
 
 async function map_admin_pins(url){
-    let response = await fetch(url+'/api/map/datarsets',{
+    let response = await fetch(url+'/api/map/datasets',{
         method: "GET"
     })
 
