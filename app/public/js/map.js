@@ -31,7 +31,7 @@ function draw_pins(datareads) {
     // Por cada dato se crea un marcador y se agrega al grupo de clúster
     datareads.forEach(element => {
         // Validamos que las coordenadas sean números válidos
-        if (typeof element.latitude === 'number' && typeof element.longitude === 'number') {
+        if (element.latitude !== null && element.longitude !== null){
             let marker = L.marker([element.latitude, element.longitude]);
             marker.bindPopup(element.dataset_name);
             marker.on('mouseover', function () {
@@ -42,8 +42,6 @@ function draw_pins(datareads) {
             });
             marker.on('click', (event) => onMarkerClick(event, '/admin/dataset/' + element.dataset_id + '/show'));
             markersCluster.addLayer(marker);
-        } else {
-            console.warn(`Coordenadas inválidas para el dataset con ID ${element.dataset_id}:`, element);
         }
     });
 
