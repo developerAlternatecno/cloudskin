@@ -30,16 +30,20 @@ function draw_pins(datareads){
 
     // Por cada dato se crea un marcador y se agrega al grupo de clúster
     datareads.forEach(element => {
-        let marker = L.marker([element.latitude, element.longitude]);
-        marker.bindPopup(element.dataset_name);
-        marker.on('mouseover', function (e) {
-            this.openPopup();
-        });
-        marker.on('mouseout', function (e) {
-            this.closePopup();
-        });
-        marker.on('click', (event) => onMarkerClick(event, '/admin/dataset/' + element.dataset_id + '/show'));
-        markersCluster.addLayer(marker);
+        if (typeof element.latitude === 'number' && typeof element.longitude === 'number') {
+            let marker = L.marker([element.latitude, element.longitude]);
+            marker.bindPopup(element.dataset_name);
+            marker.on('mouseover', function () {
+                this.openPopup();
+            });
+            marker.on('mouseout', function () {
+                this.closePopup();
+            });
+            marker.on('click', (event) => onMarkerClick(event, '/admin/dataset/' + element.dataset_id + '/show'));
+            markersCluster.addLayer(marker);
+        } else {
+            continue
+        }
     });
 
     // Agregamos el grupo de clúster al mapa global
