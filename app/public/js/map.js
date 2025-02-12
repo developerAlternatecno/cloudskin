@@ -19,17 +19,18 @@ async function map_admin_pins(url){
     drawnMap();
 }
 
-function draw_pins(datareads){
+function draw_pins(datareads) {
     // Creamos un grupo de clúster usando Leaflet.markercluster
     var markersCluster = L.markerClusterGroup({
         spiderfyOnMaxZoom: true,     // Expande el clúster en el máximo zoom para ver marcadores individuales
-        showCoverageOnHover: false,    // Desactiva la visualización del área cubierta al pasar el mouse
-        zoomToBoundsOnClick: true,     // Hace zoom al hacer clic en el clúster
-        maxClusterRadius: 40           // Ajusta el radio (en píxeles) para agrupar marcadores
+        showCoverageOnHover: false,  // Desactiva la visualización del área cubierta al pasar el mouse
+        zoomToBoundsOnClick: true,   // Hace zoom al hacer clic en el clúster
+        maxClusterRadius: 40         // Ajusta el radio (en píxeles) para agrupar marcadores
     });
 
     // Por cada dato se crea un marcador y se agrega al grupo de clúster
     datareads.forEach(element => {
+        // Validamos que las coordenadas sean números válidos
         if (typeof element.latitude === 'number' && typeof element.longitude === 'number') {
             let marker = L.marker([element.latitude, element.longitude]);
             marker.bindPopup(element.dataset_name);
@@ -41,6 +42,8 @@ function draw_pins(datareads){
             });
             marker.on('click', (event) => onMarkerClick(event, '/admin/dataset/' + element.dataset_id + '/show'));
             markersCluster.addLayer(marker);
+        } else {
+            console.warn(`Coordenadas inválidas para el dataset con ID ${element.dataset_id}:`, element);
         }
     });
 
