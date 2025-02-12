@@ -41,8 +41,6 @@ function draw_pins(datareads){
             });
             marker.on('click', (event) => onMarkerClick(event, '/admin/dataset/' + element.dataset_id + '/show'));
             markersCluster.addLayer(marker);
-        } else {
-            continue
         }
     });
 
