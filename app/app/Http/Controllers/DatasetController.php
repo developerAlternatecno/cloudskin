@@ -18,20 +18,37 @@ class DatasetController extends Controller
     public function createDatasetFromAPI(Request $request)
     {
         try{
-            Log::info("Entramos en el CreateDatasetFromAPI");
-            Log::info($request);
             $dataset_id = Str::uuid()->toString();
             $dataset = new Dataset();
             $dataset->id = $dataset_id;
             $dataset->user_id = $request->user_id;
             $dataset->engine_id = $request->engine_id;
 
+            if ($request->query('by-bulk', false)) {
+                $dataset->name = $request->dataset_name;
+                $dataset->owner = $request->dataset_owner;
+                $dataset->origin = $request->dataset_origin;
+                $dataset->start_daterange = Carbon::createFromFormat('d-m-Y', $request->dataset_start_daterange)->format('Y-m-d');
+                $dataset->end_daterange = Carbon::createFromFormat('d-m-Y', $request->dataset_end_daterange)->format('Y-m-d');
+                $dataset->type = $request->dataset_type;
+                $dataset->price = $request->dataset_price;
+                $dataset->license = $request->dataset_license;
+                $dataset->categorie = $request->dataset_categorie;
+                $dataset->description = $request->dataset_description;
+                $dataset->is_geolocated = $request->dataset_checkbox;
+                $dataset->autovalidate_sales = $request->autovalidate_sales;
+                $dataset->data_type = $request->dataset_data_type;
+            }
+
             $project = Project::find($request->input('project_id'));
+            if (!$project) {
+                return response(['error' => 'project_not_found', 'message' => 'The project does not exist'], 404);
+            }
             $project->datasets()->attach($dataset);
 
             $dataset->save();
 
-            return response(['url' => url("/api/datasets/".$dataset_id)], 200);
+            return response(['url' => url("/api/datasets/".$dataset_id), "id"=>$dataset_id], 200);
 
         }catch (\Exception $e){
             Log::error($e->getMessage());
@@ -51,11 +68,11 @@ class DatasetController extends Controller
 
             $longitude = $request->input('longitude', null);
             $latitude = $request->input('latitude', null);
-    
+
             if ($dataset->is_geolocated && (!$longitude || !$latitude)) {
                 return response()->json(['error' => 'invalid_data', 'message' => 'The dataset is geolocated, so you must provide longitude and latitude values.'], 400);
             }
-    
+
             $engine_template = json_decode($dataset->engine->template, true);
             $array_data = $request->input('data', []);
 
@@ -78,7 +95,7 @@ class DatasetController extends Controller
                 $dataread->data = $dataread->serialize($data);
                 $dataread->longitude = $longitude;
                 $dataread->latitude = $latitude;
-    
+
                 $dataread->save();
             }
 
@@ -270,7 +287,7 @@ class DatasetController extends Controller
                 $dataread->data = json_encode($entry['data'] ?? []);
                 $dataread->longitude = $entry['longitude'] ?? null;
                 $dataread->latitude = $entry['latitude'] ?? null;
-    
+
                 $dataread->save();
             }
         }

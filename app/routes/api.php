@@ -7,9 +7,9 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\Project;
 use App\Http\Controllers\ProjectController;
+use App\Models\Dictionary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use PSpell\Dictionary;
 
 /*
 |--------------------------------------------------------------------------
