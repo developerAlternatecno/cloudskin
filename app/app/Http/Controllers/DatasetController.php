@@ -36,6 +36,8 @@ class DatasetController extends Controller
                 $dataset->categorie = $request->dataset_categorie;
                 $dataset->description = $request->dataset_description;
                 $dataset->is_geolocated = $request->dataset_checkbox;
+                $dataset->latitude = $request->latitude;
+                $dataset->longitude = $request->longitude;
                 $dataset->autovalidate_sales = $request->autovalidate_sales;
                 $dataset->data_type = $request->dataset_data_type;
             }
